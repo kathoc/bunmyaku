@@ -17,6 +17,13 @@ def memory_root():
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] in {"editor-request", "editor-select", "editor-apply"}:
+        from .editorial import main as editorial_main
+        try:
+            return editorial_main(argv)
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            print(f"エラー: {exc}", file=sys.stderr)
+            return 2
     if argv and argv[0] == "engine":
         from .cli import main as engine_main
         return engine_main(argv[1:])

@@ -114,3 +114,7 @@
 - [参照先](https://www.jstage.jst.go.jp/article/jjep1953/39/2/39_133/_article/-char/ja/)、[Sundararajan・Adesope)。記載箇所: [docs/research/interest-literature.md](../docs/research/interest-literature.md)
 - [参照先](https://www.sciencedirect.com/science/article/pii/S0304422X99000212)。記載箇所: [docs/research/interest-literature.md](../docs/research/interest-literature.md)、[src/jlangbase/resources/interest-research.json](../src/jlangbase/resources/interest-research.json)
 - [参照先](https://www.sciencedirect.com/science/article/pii/S0959475216300123)。筆記体の読みやすさを変えた研究でも、程度による違いが報告されている。[研究の著者抄録)。記載箇所: [docs/research/reading-craft.md](../docs/research/reading-craft.md)
+
+## 取捨選択・内声・リズムの追加調査
+
+[内声・休止・予想のずれに関する資料](../src/jlangbase/resources/editorial-research.md)に、渡部・小磯（2014）、森田・髙橋（2019）、高橋（2007）、Grossほか（2014）、Witekほか（2014）、Sennほか（2024）の一次資料と閲覧範囲、採用した仮説、一般化しない範囲を記載した。
