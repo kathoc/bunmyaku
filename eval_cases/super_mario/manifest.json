@@ -1,0 +1,147 @@
+{
+  "title": "スーパーマリオとは何だったのか？",
+  "reference": "reference/reference.jsonl",
+  "author_type": "llm",
+  "created_at": "2026-09-06T00:00:00Z",
+  "provenance": "全版と基準文はこの作業で生成した未転載の文章。人間コーパスではない。初稿は抽象的・均質な文章を意図して作った比較用の初期条件。改善効果の独立した実証ではない。",
+  "versions": [
+    {
+      "id": "00_initial",
+      "path": "versions/00_initial.md",
+      "intent": "比較の出発点。抽象的な導入と同じ型の段落を置く。",
+      "changes": [
+        "操作・学習・体験の三項目を並列に説明",
+        "注意点を置き、結論で三項目を言い直す"
+      ],
+      "annotations": [
+        {
+          "aspect": "主張の位置",
+          "observation": "冒頭の評価は広く、具体的な論点は第2段落以降に分散する",
+          "confidence": 0.9,
+          "evidence": "遊びの可能性を切り拓いた存在"
+        },
+        {
+          "aspect": "段落間の関係",
+          "observation": "並列の説明が続き、操作が学習や手応えにつながる筋道は薄い",
+          "confidence": 0.85,
+          "evidence": "次に、学習の仕組みに注目する必要がある。"
+        }
+      ]
+    },
+    {
+      "id": "01_expression",
+      "path": "versions/01_expression.md",
+      "intent": "6段落の並列構成を保ち、抽象語と冗長な述語を具体的な操作へ置き換える。",
+      "changes": [
+        "できる・と言えるだろうの反復を減らす",
+        "ボタン、踏み切り、助走で説明",
+        "主張の範囲を筆者の読みへ絞る"
+      ],
+      "annotations": [
+        {
+          "aspect": "具体例の役割",
+          "observation": "操作は想像しやすくなったが、学習の段落と穴の例が重なる",
+          "confidence": 0.9,
+          "evidence": "穴の手前で跳ぶ。届かなければ、もう少し先まで走ってみる。"
+        },
+        {
+          "aspect": "構成の残課題",
+          "observation": "まず・次に・さらにの並列順は初稿から残る",
+          "confidence": 0.98,
+          "evidence": "さらに、自分で進み方を選べる。"
+        }
+      ]
+    },
+    {
+      "id": "02_structure",
+      "path": "versions/02_structure.md",
+      "intent": "主張→一つの具体例→意味の説明→成立条件→結論の5段落に組み替える。",
+      "changes": [
+        "冒頭で失敗後の次の一手に論点を限定",
+        "穴を越える例を段落間で共有",
+        "指示への追従と自分の予想の検証を比較",
+        "例外を単なる注意書きから主張の成立条件へ変更",
+        "結論を冒頭の反復から失敗後に残る情報へ進める"
+      ],
+      "annotations": [
+        {
+          "aspect": "主張の位置",
+          "observation": "冒頭の一文で論点を提示し、次文で考察対象を穴越えに限定する",
+          "confidence": 0.98,
+          "evidence": "少なくとも、穴を跳び越える場面からはそう考えられる。"
+        },
+        {
+          "aspect": "段落間のつながり",
+          "observation": "具体例の予想と検証を、次段落が自分で進めた感覚へつなぐ",
+          "confidence": 0.9,
+          "evidence": "この小さな判断が挟まるからだろう。"
+        },
+        {
+          "aspect": "反論・限定",
+          "observation": "学習を成立させる条件を示し、失敗すれば学べるという一般化を抑える",
+          "confidence": 0.95,
+          "evidence": "失敗そのものが学びになるわけではない。"
+        },
+        {
+          "aspect": "残る限界",
+          "observation": "シリーズの歴史的評価には答えていない。主観的な遊びの解釈に対象を絞った文章である",
+          "confidence": 0.98,
+          "evidence": "私がマリオから考えたいのは"
+        }
+      ]
+    },
+    {
+      "id": "03_friction",
+      "path": "versions/03_friction.md",
+      "review": "reviews/03_friction.json",
+      "intent": "場面を先に置き、無口さの意味を後で説明する。終わりの好みを説明し切らず残す。",
+      "changes": [
+        "段落ごとの役割を変え、説明の連続を減らす",
+        "一時保留する疑問と回収しない個人の好みを区別する",
+        "短い判断を置いて視点を変える"
+      ],
+      "annotations": []
+    },
+    {
+      "id": "04_explicit_control",
+      "path": "versions/04_explicit_control.md",
+      "review": "reviews/04_explicit_control.json",
+      "intent": "03の核となる主張と順序を保ち、比喩や好みを明示説明へ置き換えた対照版。",
+      "changes": [
+        "冒頭で再挑戦の理由を明示",
+        "無口さと薄情さを機能の説明へ置き換える",
+        "字数や語句にも差があるため単一要因実験ではない"
+      ],
+      "annotations": []
+    },
+    {
+      "id": "05_contextual_opening",
+      "path": "versions/05_contextual_opening.md",
+      "review": "reviews/05_contextual_opening.json",
+      "intent": "作品と時間の共有、今回の論点、具体場面の順にして03版の唐突な書き出しを直す。",
+      "changes": [
+        "作品紹介と筆者の距離感を冒頭へ追加",
+        "穴越えの場面へ入る前に論点を共有",
+        "後半を保持し、書き出しの変更を追跡する",
+        "発売年・機種を公式情報で確認。販売本数は採用しない"
+      ],
+      "annotations": []
+    },
+    {
+      "id": "06_mushroom_discovery",
+      "path": "versions/06_mushroom_discovery.md",
+      "intent": "穴越えの学習論から、キノコを受け取らせる開発上の問題へ素材を変更。結果を先に見せて過程を説明する。",
+      "changes": ["公式開発者談を素材にする", "怖い対象と有益な対象の見分けを論点にする", "語り手の評価を場面へ限定"],
+      "annotations": []
+    },
+    {
+      "id": "07_mushroom_attitude",
+      "path": "versions/07_mushroom_attitude.md",
+      "intent": "06と同じ事実核で、親切への違和感を先に置き、場面の詳述と短い反応の落差を試す。",
+      "changes": ["説明中心から逃げ道に注目した場面中心へ", "回収後の教育的まとめを省く", "架空のプレイ経験ではなく解釈として偏りを出す", "複数要因変更のため純粋な因果比較ではない"],
+      "annotations": []
+    }
+  ],
+  "genre": "essay",
+  "generation_context": "03以降は本プロジェクトの出典カード・編集原則のみを参照して作成。外部校正スキルや外部lintは不使用。生成・構成注釈は同じアシスタントによるため独立評価ではない。"
+}

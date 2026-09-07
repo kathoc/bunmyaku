@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "researched_at": "2026-09-06",
+  "status": "small_purposive_sample_not_causal_benchmark",
+  "sources": [
+    {
+      "id": "ebifry",
+      "title": "結婚挨拶とエビフライ。",
+      "url": "https://note.com/haayanyan/n/n77ee044c92ff",
+      "recognition": "創作大賞2025 KADOKAWAビジネス編集部賞",
+      "recognition_url": "https://note.com/info/n/n983a90039c5c",
+      "scope": "本文全体。追記と告知を除く",
+      "observation": "料理を用意する家族の騒ぎから、結婚挨拶の予想外の展開へ進み、終盤に同じ料理の意味が変わる。",
+      "interpretation": "題材を維持したまま、騒がしさの可笑しさを家族への感情へ転じる。比喩の連発を模倣する必要はない。",
+      "confidence": 0.85
+    },
+    {
+      "id": "reading",
+      "title": "人類に文章は早すぎた",
+      "url": "https://note.com/miyaccchi/n/n474a0d51368d",
+      "recognition": "創作大賞2025 ダイヤモンド社賞",
+      "recognition_url": "https://note.com/info/n/n983a90039c5c",
+      "scope": "本文全体の構成。引用元資料の事実は未検証",
+      "observation": "短い案内を提示し、対照例、読者向け課題、解説へ進み、最後に冒頭の案内へ戻る。",
+      "interpretation": "説明前に読者が判断する余地を置く。AIや人類についての一般化は、この分析から事実認定しない。",
+      "confidence": 0.9
+    },
+    {
+      "id": "komeda",
+      "title": "コメダ珈琲のモーニングサービスを断ってみる",
+      "url": "https://dailyportalz.jp/kiji/komeda-morning-kotowaru",
+      "ending_url": "https://dailyportalz.jp/kiji/komeda-morning-kotowaru/page/2",
+      "recognition": "媒体の2025年総合閲覧ランキング先頭掲載。読了率の値ではない",
+      "recognition_url": "https://dailyportalz.jp/kiji/best-2025",
+      "scope": "2ページの本文と画像キャプション。画像内の表は未解析",
+      "observation": "他人の選択への驚きから、調査、自分の試行へ進む。実行後にも選ばなかったものへの未練が残る。",
+      "interpretation": "他人を理解したという説明で筆者の偏りを消さない。小さな出来事のあとに釣り合わない感慨を置く余地がある。",
+      "confidence": 0.9
+    },
+    {
+      "id": "learning",
+      "title": "知らなくていいなんて言わないで",
+      "url": "https://note.com/shigareita/n/n6ffb0e3a363d",
+      "recognition": "創作大賞2025 エッセイ部門入選、朝日新聞出版推薦",
+      "recognition_url": "https://note.com/info/n/n983a90039c5c",
+      "scope": "本文全体",
+      "observation": "家庭と学ぶ環境の記憶を置き、教師の発言へ進み、現在の仕事にも残る葛藤を述べる。",
+      "interpretation": "葛藤を成功談で閉じず、いま続けている行為へつなぐ。冒頭の家庭事情を単なる意外性の仕掛けとは扱わない。",
+      "confidence": 0.85
+    },
+    {
+      "id": "resort",
+      "title": "星野リゾート全制覇に300万使ったOLの極論",
+      "url": "https://note.com/olnomika/n/n90ddb381d6fb",
+      "recognition": "創作大賞2025 朝日新聞出版賞",
+      "recognition_url": "https://note.com/info/n/n983a90039c5c",
+      "scope": "導入から節約編冒頭までの部分分析。終盤は評価対象外",
+      "observation": "失恋、旅の体験、次の目標を先に語り、その資金はどうするかという現実的な問いへ進む。",
+      "interpretation": "実行可能性の説明を後へ置くことで、読者に疑問を持つ時間が生まれる。費用の説明を省いた手順書には転用しない。",
+      "confidence": 0.8
+    }
+  ],
+  "principles": [
+    {
+      "id": "reader_foothold",
+      "question": "読者は、何が起きていて何を追えばよいかを既に知っているか。",
+      "action": "疑問を残す前に、人物・対象・行為のうち理解に必要な足場を置く。",
+      "sources": [
+        "reading",
+        "komeda"
+      ]
+    },
+    {
+      "id": "prediction_room",
+      "question": "説明を先に言い切って、読者が予想する余地を奪っていないか。",
+      "action": "結論に関わる具体例を先に見せる案と、結論先行の案を比べる。どちらも型として固定しない。",
+      "sources": [
+        "reading",
+        "resort"
+      ]
+    },
+    {
+      "id": "role_progression",
+      "question": "この段落を読む前と後で、読者が知ること・感じることは何が変わるか。",
+      "action": "隣の段落と同じ働きなら統合か削除を検討する。短文にするだけでは済ませない。",
+      "sources": [
+        "ebifry",
+        "learning"
+      ]
+    },
+    {
+      "id": "earned_turn",
+      "question": "見方が変わる箇所に、その変化を支える出来事があるか。",
+      "action": "感情語を足す前に、予想と実際がずれた具体的な行為を置く。",
+      "sources": [
+        "ebifry",
+        "komeda"
+      ]
+    },
+    {
+      "id": "productive_friction",
+      "question": "説明を待たせることで読者が得るものは何か。待っても筋を追えるか。",
+      "action": "ひっかかりの箇所、足場、読者に残す問い、回収先または残す理由を記録する。数や比率は目標にしない。",
+      "sources": [
+        "reading",
+        "resort",
+        "learning"
+      ]
+    },
+    {
+      "id": "voice_residue",
+      "question": "筆者の偏りを消した結果、誰が書いても同じ文章になっていないか。",
+      "action": "主張の根拠を損なわない好み・ためらい・未練は残す選択肢を持つ。読者全員へ同意を求めない。",
+      "sources": [
+        "komeda",
+        "learning"
+      ]
+    },
+    {
+      "id": "return_with_change",
+      "question": "末尾は冒頭の言い換えか、それとも同じものが違って見えるのか。",
+      "action": "題材を戻すなら途中の出来事が加えた意味を確かめる。すべての題材を回収する義務はない。",
+      "sources": [
+        "ebifry",
+        "reading"
+      ]
+    },
+    {
+      "id": "no_forced_lesson",
+      "question": "出来事のあとに、不要な教訓や意味の解説を付けていないか。",
+      "action": "読者が既に受け取れる結論なら解説を削る案も残す。業務手順の必須説明は削らない。",
+      "sources": [
+        "komeda",
+        "learning"
+      ]
+    },
+    {
+      "id": "local_cadence",
+      "question": "続いていた句の拍列から外れる箇所に、視点や調子を変える働きがあるか。",
+      "action": "直前の並びと現在の拍列を比較する。音の乱れを増やすこと自体は目標にしない。",
+      "sources": [],
+      "basis": "user_hypothesis"
+    },
+    {
+      "id": "early_attention",
+      "question": "よくある話だと判断される前に、読者の予想が少し動く箇所はあるか。",
+      "action": "最初に読者と対象・状況を共有する。早いひっかかりのために唐突な場面へ飛び込まない。足場を置いたうえで、導入で予想を変える案と後に置く案を比較する。数字は捏造しない。",
+      "sources": [],
+      "basis": "user_hypothesis"
+    },
+    {
+      "id": "register_and_scale",
+      "question": "説明調の中の強い言葉や具体的な桁が、書き手の関わり方を伝えるか。",
+      "action": "鬼のような、という語だけを禁止しない。強調が何に支えられ、読者にどんな疑問を残すかを注釈する。",
+      "sources": [],
+      "basis": "user_supplied_example"
+    },
+    {
+      "id": "shared_entry",
+      "question": "読者は、何について、どんな距離から考える文章に入ったかが分かるか。",
+      "action": "必要なら作品・対象の短い紹介と筆者の現在地を置き、今回の問いを経て場面へ進む。知らない読者を置いていかず、知っている読者には説明を重ねすぎない。",
+      "sources": [],
+      "basis": "user_feedback_on_abrupt_opening"
+    }
+  ],
+  "genres": {
+    "essay": {
+      "label": "読み物・エッセイ",
+      "focus": [
+        "shared_entry",
+        "reader_foothold",
+        "role_progression",
+        "earned_turn",
+        "productive_friction",
+        "voice_residue",
+        "return_with_change",
+        "no_forced_lesson",
+        "local_cadence",
+        "early_attention",
+        "register_and_scale"
+      ],
+      "constraint": "体験していない出来事を実体験として書かない。比喩・短文・問いを各段落へ均等配布しない。"
+    },
+    "explanation": {
+      "label": "解説・考察",
+      "focus": [
+        "shared_entry",
+        "reader_foothold",
+        "prediction_room",
+        "role_progression",
+        "productive_friction",
+        "return_with_change",
+        "local_cadence",
+        "early_attention",
+        "register_and_scale"
+      ],
+      "constraint": "読者の判断に必要な定義や前提を隠さない。関心の維持と事実の正しさを別に確認する。"
+    },
+    "guide": {
+      "label": "手順・実務文書",
+      "focus": [
+        "shared_entry",
+        "reader_foothold",
+        "role_progression"
+      ],
+      "constraint": "操作に必要な前提・費用・停止条件を後回しにしない。ひっかかりや未回収を作る必要はない。"
+    }
+  },
+  "limitations": [
+    "選ばれた少数記事の観察であり、読まれなかった記事との対照実験ではない。",
+    "評価は編集者の選出や媒体の閲覧指標。文章構造が評価の原因だとは確定できない。",
+    "写真・題材・知名度・配信・読者層の効果は分離できていない。",
+    "全文転載と著者の文体模倣を目的としない。一般化した編集上の問いを利用する。"
+  ]
+}

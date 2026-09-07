@@ -1,0 +1,35 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+output/*
+!output/.gitkeep
+*.sqlite3*
+build/
+dist/
+
+# Local credentials, personal feedback, and generated experiment records.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.agents/
+.codex/
+.claude/
+eval_cases/**/records/
+eval_cases/**/reader-study-*/
+eval_cases/**/analysis/
+eval_cases/**/project-brief/
+eval_cases/**/mario-live-*/
+eval_cases/attention/
+eval_cases/super_mario/opening-feedback.md
+eval_cases/super_mario/interest-iteration.md
+# Superseded central execution design; improvement is intended to be local.
+.github/workflows/central-improvement.yml
+central/

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "researched_at": "2026-09-06",
+  "status": "targeted_literature_review_not_systematic_review",
+  "outcomes": ["続きを知りたい", "可笑しい", "心が動く", "理解できる", "後で思い出せる"],
+  "limitations": [
+    "目的別の探索であり、網羅的検索・メタ分析を本プロジェクトで実施したわけではない。",
+    "原著の結果と日本語エッセイへの転用仮説は別。抄録のみの資料には未確認の標本数や効果量を補わない。",
+    "早いひっかかり、1%の密度、5-7-5から13-4-6への変化の最適性を実証した資料ではない。",
+    "語り手の偏りや教訓を省く編集は試作仮説であり、普遍的な良文の条件ではない。"
+  ],
+  "studies": [
+    {
+      "id": "akita1991", "citation": "秋田喜代美 (1991). 物語の詳しさがおもしろさに及ぼす効果. 教育心理学研究, 39(2), 133-142.",
+      "url": "https://www.jstage.jst.go.jp/article/jjep1953/39/2/39_133/_article/-char/ja/",
+      "access_scope": "原著抄録・PDFの部分参照", "design": "中学1年生が同じ筋の3種の物語を読む比較実験",
+      "finding": "筋だけ、筋に関わる詳述、筋から独立した詳述を比較し、筋に関わる詳述で面白さと人物理解に利点があった。",
+      "limit": "児童向け物語の結果。成人向け記事の詳しさ全般や最適字数を保証しない。",
+      "transfer_hypothesis": "細部は数ではなく、行為や人物の見方を変えるかで選ぶ。"
+    },
+    {
+      "id": "loewenstein1994", "citation": "Loewenstein, G. (1994). The Psychology of Curiosity: A Review and Reinterpretation. Psychological Bulletin, 116(1), 75-98.",
+      "url": "https://www.cmu.edu/dietrich/sds/docs/loewenstein/PsychofCuriosity.pdf",
+      "access_scope": "著者所属大学公開PDFの抄録・導入", "design": "研究レビューと理論提案",
+      "finding": "知識・理解の欠落を本人が認識することから好奇心を説明する情報ギャップ理論を提案。",
+      "limit": "本稿自体を記事の書き出しについての介入実験とは扱わない。",
+      "transfer_hypothesis": "何も教えないのではなく、何が分からないか読者が特定できる材料を置く。"
+    },
+    {
+      "id": "miall1994", "citation": "Miall, D. S., & Kuiken, D. (1994). Foregrounding, defamiliarization, and affect: Response to literary stories. Poetics, 22(5), 389-407.",
+      "url": "https://sites.ualberta.ca/~dmiall/MiallPub/Miall_Kuiken_Foregrounding_1994.pdf",
+      "access_scope": "著者公開PDFの抄録・方法・結論", "design": "3短編・4研究、区間別の文体特徴と読書時間・評定の関連分析",
+      "finding": "前景化された区間は読書時間、印象の強さ、感情の評定と関連した。",
+      "limit": "相関から因果を確定できない。読書時間が延びれば理解や好みも良くなるとは限らない。",
+      "transfer_hypothesis": "局所的な異質さを消す前に、そこで何を感じ直すのかを検討する。"
+    },
+    {
+      "id": "hoeken2000", "citation": "Hoeken, H., & van Vliet, M. (2000). Suspense, curiosity, and surprise: How discourse structure influences the affective and cognitive processing of a story. Poetics, 27(4), 277-286.",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0304422X99000212",
+      "access_scope": "出版社の原著抄録", "design": "作家の物語を用い、提示構造を変える実験",
+      "finding": "結末を知っていてもサスペンスは生じた。意外な出来事を含む条件で鑑賞評価と出来事の表象に利点が報告された。",
+      "limit": "特定の物語の実験であり、結論を後置するほど面白いという法則ではない。",
+      "transfer_hypothesis": "結果を先に知らせて過程を読ませる案も比較する。"
+    },
+    {
+      "id": "silvia2005", "citation": "Silvia, P. J. (2005). What is interesting? Exploring the appraisal structure of interest. Emotion, 5(1), 89-102.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15755222/",
+      "access_scope": "原著抄録", "design": "図形・美術・詩などを使った4実験",
+      "finding": "新奇性・複雑さの評価と理解可能性の評価が興味を予測した。同じモデルは楽しさを予測しなかった。",
+      "limit": "興味と楽しさは同一尺度ではない。奇抜さや難解さだけを増やす根拠ではない。",
+      "transfer_hypothesis": "既知の足場を残し、少し先にまだ説明のつかないものを置く。"
+    },
+    {
+      "id": "kang2009", "citation": "Kang, M. J., et al. (2009). The wick in the candle of learning: epistemic curiosity activates reward circuitry and enhances memory. Psychological Science, 20(8), 963-973.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19619181/",
+      "access_scope": "原著抄録", "design": "雑学問題を用いたfMRIと行動研究",
+      "finding": "高い好奇心は回答を得るための資源投入や、1〜2週間後の意外な回答の記憶と関連した。",
+      "limit": "長文記事の記憶効果を直接測っていない。脳活動だけを面白さの証拠にしない。",
+      "transfer_hypothesis": "続きへの興味と後日の記憶を別々に尋ねる。"
+    },
+    {
+      "id": "ito2010", "citation": "伊藤大幸 (2010). ユーモアの生起過程における論理的不適合および構造的不適合の役割. 認知科学, 17(2), 297-312.",
+      "url": "https://www.jstage.jst.go.jp/article/jcss/17/2/17_2_297/_pdf/-char/ja",
+      "access_scope": "原著PDFの方法・結果・理論部分", "design": "日本人大学1年生25名、2要因参加者内計画、短いエピソードを改変",
+      "finding": "状況の特異さと因果の分からなさを区別。論理的不適合の主観的認知はユーモアの低下に結びついた。",
+      "limit": "少人数・短文の研究。すべての省略や未回収をなくす根拠ではない。",
+      "transfer_hypothesis": "妙な組み合わせは残しても、状況をつかむ手がかりまで消さない。"
+    },
+    {
+      "id": "mcgraw2010", "citation": "McGraw, A. P., & Warren, C. (2010). Benign violations: making immoral behavior funny. Psychological Science, 21(8), 1141-1149.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20587696/",
+      "access_scope": "原著抄録", "design": "道徳的逸脱を扱った5実験",
+      "finding": "逸脱でありつつ無害とも見なされる条件で、嫌悪とともに笑いや可笑しさが生じた。",
+      "limit": "語調の乱暴さや攻撃性を増やせば笑えるという結果ではない。対象や距離で受け取り方は変わる。",
+      "transfer_hypothesis": "皮肉の標的と、読者がそれを深刻な攻撃と受け取らない根拠を点検する。"
+    },
+    {
+      "id": "brod2019", "citation": "Brod, G., & Breitwieser, J. (2019). Lighting the wick in the candle of learning: generating a prediction stimulates curiosity. npj Science of Learning, 4, 17.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31646002/",
+      "access_scope": "原著抄録・出版社の書誌情報", "design": "数値に関する事実の学習で予測生成と例示生成を比較",
+      "finding": "予測する条件で高い好奇心の評定が増えた。好奇心と記憶、瞳孔反応にも関連があった。",
+      "limit": "能動的な課題と黙読は違う。疑問文を挿すだけで同じ効果が出るとは言えない。",
+      "transfer_hypothesis": "答えの直前に、読者が自分の見立てを持てる事実を示す。"
+    },
+    {
+      "id": "kodama2020", "citation": "小玉安恵 (2020). 面白い話が本当に面白い話になるために必要なこと. 社会言語科学, 23(1), 178-193.",
+      "url": "https://www.jstage.jst.go.jp/article/jajls/23/1/23_178/_article/-char/ja/",
+      "access_scope": "原著抄録。PDF取得失敗", "design": "テレビのトーク番組における芸能人の体験談の質的分析",
+      "finding": "人物像と内言・発話の落差、山場付近への評価表現の集中、詳述による延期と落ちの短縮を分析。",
+      "limit": "話し言葉・演者・番組の文脈を含む。文字だけの記事の因果実験ではない。",
+      "transfer_hypothesis": "前置きと山場と落ちで、描写量や文の調子を同じにしない。"
+    },
+    {
+      "id": "sundararajan2020", "citation": "Sundararajan, N., & Adesope, O. (2020). Keep it Coherent: A Meta-Analysis of the Seductive Details Effect. Educational Psychology Review, 32, 707-734.",
+      "url": "https://link.springer.com/article/10.1007/s10648-020-09522-4",
+      "access_scope": "出版社の原著抄録・書誌情報", "design": "学習教材の魅力的だが無関係な細部についてのメタ分析",
+      "finding": "無関係で興味深い情報が学習を妨げうる。効果は教材設計や測定方法などによって異なる。",
+      "limit": "測定対象は学習。随筆の脱線や楽しみを一律排除する根拠ではない。",
+      "transfer_hypothesis": "気を引く細部が本題の記憶を奪っていないか、別の質問で調べる。"
+    },
+    {
+      "id": "bermejo2022", "citation": "Bermejo Berros, J., López Díez, J., & Gil Martínez, M. Á. (2022). Inducing narrative tension in the viewer through suspense, surprise, and curiosity. Poetics. DOI: 10.1016/j.poetic.2022.101664.",
+      "url": "https://uvadoc.uva.es/handle/10324/52500?locale-attribute=en",
+      "access_scope": "著者所属大学リポジトリの原著抄録", "design": "映像物語の4版を4群、計94名で比較",
+      "finding": "構成による物語の緊張と、進行中の予期・振り返り・感情を分析し、好奇心の組織的役割を論じる。",
+      "limit": "映像を含む研究。日本語文章のリズムや冒頭位置の最適化には直結しない。",
+      "transfer_hypothesis": "結末の評価だけでなく、途中で読者が何を予想し直したかを記録する。"
+    }
+  ],
+  "lenses": [
+    {"id": "material", "genres": ["essay", "explanation", "guide"], "studies": ["akita1991", "sundararajan2020"], "question": "この題材固有の、見立てを変える事実は何か。", "action": "題名を別の対象に差し替えても成立する一般論だけなら、語句ではなく素材を探し直す。"},
+    {"id": "gap", "genres": ["essay", "explanation"], "studies": ["loewenstein1994", "silvia2005", "brod2019"], "question": "読者は何を知っていて、どこだけまだ分からないか。", "action": "共有文脈と予想の材料を置く。何も分からない唐突さと、答えを知りたい状態を区別する。"},
+    {"id": "order", "genres": ["essay", "explanation"], "studies": ["hoeken2000", "bermejo2022"], "question": "結果を先に置いても、過程を読む理由が残るか。", "action": "結末を伏せる版と、結果を明かして経緯を読ませる版を候補にする。毎回の逆転は強制しない。"},
+    {"id": "peak", "genres": ["essay"], "studies": ["kodama2020", "miall1994"], "question": "どこだけ長居し、どこをあっさり通るか。", "action": "山場の動作は具体的に、落ちの解説は省く案を作る。全段落の密度や調子をそろえない。"},
+    {"id": "incongruity", "genres": ["essay"], "studies": ["ito2010", "mcgraw2010"], "question": "おかしいのは状況か、それとも説明が壊れているだけか。", "action": "状況が分かる手がかりは残す。語り手の偏りと、事実の偽装・他人への攻撃を区別する。"},
+    {"id": "outcomes", "genres": ["essay", "explanation", "guide"], "studies": ["silvia2005", "kang2009", "sundararajan2020"], "question": "続きを知りたい、笑える、理解できる、覚えているのどれを狙うか。", "action": "目的を選び、別々に観察する。読書時間や機械的特徴量だけで達成を宣言しない。"}
+  ]
+}

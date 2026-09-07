@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "text_hash": "c832f93bcd956c6df3930244bbe4773ad3d646308a98dd142a9af6a264e94aaf",
+  "reviewer": "project-local editorial pass; author self-review",
+  "reviewer_kind": "model",
+  "nodes": [
+    {
+      "role": "explanation",
+      "evidence": {
+        "paragraph": 1,
+        "quote": "1985年、任天堂がファミリーコンピュータ向けに発売したアクションゲームだ"
+      },
+      "reader_gain": "作品の種類と、発売から時間を経て考えている筆者の位置を共有する。",
+      "depends_on": [],
+      "confidence": 0.9
+    },
+    {
+      "role": "question",
+      "evidence": {
+        "paragraph": 2,
+        "quote": "失敗したのに、もう一度やりたくなる"
+      },
+      "reader_gain": "作品全体の紹介から、失敗後の再挑戦という今回の論点へ焦点を移す。",
+      "depends_on": [
+        1
+      ],
+      "confidence": 0.9
+    },
+    {
+      "role": "scene",
+      "evidence": {
+        "paragraph": 3,
+        "quote": "まだ反省もしていない"
+      },
+      "reader_gain": "操作の場面を共有し、理解より先に再挑戦したくなる理由を保留する。",
+      "depends_on": [
+        2
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "evidence",
+      "evidence": {
+        "paragraph": 4,
+        "quote": "ボタンを押す位置だけだ"
+      },
+      "reader_gain": "読者が次に変えることを一つ想像できる。",
+      "depends_on": [
+        3
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "turn",
+      "evidence": {
+        "paragraph": 5,
+        "quote": "ずいぶん無口だ"
+      },
+      "reader_gain": "行為の描写から、ゲームの説明の少なさへ視点を切り替える。",
+      "depends_on": [
+        4
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "explanation",
+      "evidence": {
+        "paragraph": 6,
+        "quote": "次に試すことは浮かぶ"
+      },
+      "reader_gain": "無口さを画面の手がかりと結びつけ、冒頭の再挑戦の理由を説明する。",
+      "depends_on": [
+        3,
+        4,
+        5
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "aside",
+      "evidence": {
+        "paragraph": 7,
+        "quote": "この遠回りのほうが気になる"
+      },
+      "reader_gain": "早く進む価値と、自分で確かめる価値が異なると分かる。筆者の好みも残る。",
+      "depends_on": [
+        6
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "qualification",
+      "evidence": {
+        "paragraph": 8,
+        "quote": "無口さはただの不親切になる"
+      },
+      "reader_gain": "自分で考える楽しさには、違いが見えるという条件がある。",
+      "depends_on": [
+        5,
+        6
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "claim",
+      "evidence": {
+        "paragraph": 9,
+        "quote": "操作しようとして理解が動き出す"
+      },
+      "reader_gain": "行為と理解の順序について、場面から限定的な解釈を得る。",
+      "depends_on": [
+        6,
+        8
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "payoff",
+      "evidence": {
+        "paragraph": 10,
+        "quote": "その薄情さもちょっと好きだ"
+      },
+      "reader_gain": "同じ穴を、達成後には見なくなる対象として捉え直す。感触を説明し切らない。",
+      "depends_on": [
+        3,
+        9
+      ],
+      "confidence": 0.85
+    }
+  ],
+  "frictions": [
+    {
+      "id": "unfinished-motive",
+      "kind": "voice",
+      "anchor": {
+        "paragraph": 1,
+        "quote": "どういうわけか"
+      },
+      "foothold": {
+        "paragraph": 1,
+        "quote": "発売から40年が過ぎた今"
+      },
+      "reader_question": "なぜいまこの作品を考えているのか",
+      "benefit": "考え始めた筆者の距離感を示し、結論へ急がず話題へ入るという仮説",
+      "risk": "動機を曖昧にしただけと読まれる可能性",
+      "decision": "test",
+      "decision_reason": "次段落で考える対象は明示する。個人的なきっかけまでは捏造して説明しない。",
+      "necessity": "optional",
+      "resolution": "open",
+      "payoff": null,
+      "confidence": 0.8
+    },
+    {
+      "id": "before-reflection",
+      "kind": "delayed_explanation",
+      "anchor": {
+        "paragraph": 3,
+        "quote": "まだ反省もしていないのに、次をやる気になっている"
+      },
+      "foothold": {
+        "paragraph": 3,
+        "quote": "向こう岸に少し届かなかった"
+      },
+      "reader_question": "理由が分かる前になぜ再挑戦したいのか",
+      "benefit": "次の操作を自分で予想する時間を置く",
+      "risk": "気持ちを読者全員へ押しつけたと受け取られる可能性",
+      "decision": "test",
+      "decision_reason": "仮想の一場面として提示し、後の手がかりで回収する",
+      "necessity": "optional",
+      "resolution": "later",
+      "payoff": {
+        "paragraph": 6,
+        "quote": "全部を説明されなくても、次に試すことは浮かぶ"
+      },
+      "confidence": 0.75
+    },
+    {
+      "id": "quiet-kindness",
+      "kind": "rhythm",
+      "anchor": {
+        "paragraph": 5,
+        "quote": "マリオの親切さは、ここではずいぶん無口だ"
+      },
+      "foothold": {
+        "paragraph": 4,
+        "quote": "変えるのは、ボタンを押す位置だけだ"
+      },
+      "reader_question": "無口なのに親切とはどういうことか",
+      "benefit": "動作の説明を短い判断で一度止め、後の説明へ視点を変える",
+      "risk": "短い決め文だけが目立つ可能性",
+      "decision": "test",
+      "decision_reason": "文字の短さではなく、場面から解釈への転換として必要か比較する",
+      "necessity": "optional",
+      "resolution": "later",
+      "payoff": {
+        "paragraph": 6,
+        "quote": "穴の幅と向こう岸、それから届かなかった距離"
+      },
+      "confidence": 0.75
+    },
+    {
+      "id": "detour-preference",
+      "kind": "voice",
+      "anchor": {
+        "paragraph": 7,
+        "quote": "この遠回りのほうが気になる"
+      },
+      "foothold": {
+        "paragraph": 7,
+        "quote": "自分の見当が当たった感触がある"
+      },
+      "reader_question": "早く進めばよいのに、なぜ遠回りを好むのか",
+      "benefit": "筆者個人の好みを残す",
+      "risk": "読者が求める攻略情報とは異なる",
+      "decision": "keep",
+      "decision_reason": "攻略手順ではなく遊びの解釈であり、同意を義務にしていない",
+      "necessity": "optional",
+      "resolution": "open",
+      "payoff": null,
+      "confidence": 0.75
+    },
+    {
+      "id": "forget-the-hole",
+      "kind": "voice",
+      "anchor": {
+        "paragraph": 10,
+        "quote": "その薄情さもちょっと好きだ"
+      },
+      "foothold": {
+        "paragraph": 10,
+        "quote": "もう次の足場を見ているかもしれない"
+      },
+      "reader_question": "穴を忘れることをなぜ薄情と呼ぶのか",
+      "benefit": "対象への小さな感情の偏りを残す",
+      "risk": "擬人化をわざとらしいと感じる読者もいる",
+      "decision": "test",
+      "decision_reason": "説明を追加した対照版と好み・理解・記憶を別々に比較する",
+      "necessity": "optional",
+      "resolution": "open",
+      "payoff": null,
+      "confidence": 0.75
+    }
+  ],
+  "document_scope": "whole_draft"
+}

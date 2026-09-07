@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "text_hash": "b5c179a392bda3deb73ac5e05d5dea37b89f82e7be64ac7693cecc3fcd70705a",
+  "reviewer": "project-local editorial pass; author self-review",
+  "reviewer_kind": "model",
+  "frictions": [],
+  "nodes": [
+    {
+      "role": "scene",
+      "evidence": {
+        "paragraph": 1,
+        "quote": "次は跳ぶ位置を変えようと思える"
+      },
+      "reader_gain": "場面と再挑戦の理由を同じ段落で説明する。",
+      "depends_on": [],
+      "confidence": 0.85
+    },
+    {
+      "role": "evidence",
+      "evidence": {
+        "paragraph": 2,
+        "quote": "ボタンを押す位置だけだ"
+      },
+      "reader_gain": "次に試す操作を具体化する。",
+      "depends_on": [
+        1
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "claim",
+      "evidence": {
+        "paragraph": 3,
+        "quote": "次の操作の手がかり"
+      },
+      "reader_gain": "画面が説明の役割を果たすという主張を明示する。",
+      "depends_on": [
+        2
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "explanation",
+      "evidence": {
+        "paragraph": 4,
+        "quote": "全部を説明されなくても"
+      },
+      "reader_gain": "画面の手がかりを列挙する。",
+      "depends_on": [
+        3
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "explanation",
+      "evidence": {
+        "paragraph": 5,
+        "quote": "自分で確かめる面白さ"
+      },
+      "reader_gain": "自分で試すことの価値を言語化する。",
+      "depends_on": [
+        4
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "qualification",
+      "evidence": {
+        "paragraph": 6,
+        "quote": "説明がないことは不親切"
+      },
+      "reader_gain": "手がかりを認識できることが条件だと示す。",
+      "depends_on": [
+        4
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "claim",
+      "evidence": {
+        "paragraph": 7,
+        "quote": "操作しようとして理解が動き出す"
+      },
+      "reader_gain": "主張をまとめる。",
+      "depends_on": [
+        4,
+        6
+      ],
+      "confidence": 0.85
+    },
+    {
+      "role": "payoff",
+      "evidence": {
+        "paragraph": 8,
+        "quote": "次の行動へ進むところ"
+      },
+      "reader_gain": "達成後の行動も面白さとして説明する。",
+      "depends_on": [
+        7
+      ],
+      "confidence": 0.85
+    }
+  ]
+}

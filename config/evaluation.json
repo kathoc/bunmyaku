@@ -1,0 +1,10 @@
+{
+  "sentence_length": 1,
+  "char_types": 1,
+  "transitions": 1,
+  "endings": 1,
+  "ngrams": 1,
+  "paragraph_length": 1,
+  "sentences_per_paragraph": 1,
+  "document_structure": 1
+}

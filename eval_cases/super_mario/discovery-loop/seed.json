@@ -1,0 +1,16 @@
+{
+  "question": "逃げ道をふさぐ親切を、なぜ喜んで受け取るのか",
+  "destination": "キノコの配置を考えるうちに、親切についての見方がどう変わるかを読者とたどる。親切の一般的な定義を確定させない。",
+  "WORLD_STATE": [
+    {"id": "F1", "statement": "任天堂の開発者インタビューでは、キノコが土管で戻り、頭上のブロックがジャンプを妨げ、接触によってマリオが大きくなる流れが語られる。", "source": "https://www.nintendo.co.jp/wii/interview/smnj/vol1/index4.html"}
+  ],
+  "NARRATOR_STATE": {
+    "view": "親切な設計とは、相手が自分で選べるよう助けることだと思っている。",
+    "alternatives": ["役に立つものを知らない段階では、選べるだけでは受け取れないかもしれない。"]
+  },
+  "open_questions": [
+    {"id": "Q1", "question": "この場面では何が逃げにくさを作るのか", "required": true, "resolved": false},
+    {"id": "Q2", "question": "よい結果は誘導の強さを正当化するのか", "required": false, "resolved": false}
+  ],
+  "remaining_plan": ["作品の場面と親切についての暫定的な見方を共有する", "選択を助ける設計として配置を読む"]
+}
