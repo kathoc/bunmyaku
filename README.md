@@ -1,139 +1,102 @@
 # bunmyaku
 
-**bunmyakuは、日本語の文章生成・推敲の仕組みを研究する実験プロジェクトです。** 完成した製品ではなく、文章品質の向上や、すべての環境での動作を保証するものではありません。
+**AIと一緒に、伝わる日本語を考えるための実験プロジェクトです。**
 
-日本語の文章を、書きながら考え直すための執筆支援プロジェクトです。Codex・Claude Code用スキル、Ollama用アダプター、段落単位の認識更新、文章分析と修正履歴を扱います。Pythonパッケージ名と既存CLI名は互換性のため`jlangbase`を維持しています。
+bunmyakuは、CodexやClaude Codeに日本語の記事やエッセイを書いてもらうとき、文章の組み立て方や直し方を助ける道具です。「文法はおかしくないのに、何が言いたいのか残らない」「読みやすいけれど、どこか退屈」。そんな文章を、言葉づかいだけでなく、話の進め方から見直します。
 
-参考にした論文・記事・プロジェクト・公式資料は[参考資料一覧](docs/references.md)にまとめています。出典の紹介と、本プロジェクトでの効果の実証は区別します。
+## 使い始めるには
 
-## 導入と現在の状態
+Python 3.11以上が必要です。使っているOSに合わせて、次のコマンドを実行してください。
 
-Python 3.11以上で、このリポジトリを取得・展開したフォルダから実行します。
+### macOS・Linux
 
-```bash
-python install.py
-```
-
-詳細は[導入手順](docs/install.md)と[生成ループ](docs/discovery-loop-guide.md)を参照してください。個人の原稿・修正履歴は各端末内で管理し、中央収集はしません。CodexやClaudeを利用する際のクラウド通信は、端末内保存とは別です。
-
-**開発途中の公開版です。** 一括配置コードとモデル接続アダプターは実装済みですが、3OSでの実インストールと各ツールの自動起動は未検証です。`curl`/PowerShellによる導入、端末内の定期改善、更新候補の承認・復帰、自動更新は未実装です。中央実行の旧案は採用せず、GitHub Actionsによる改善処理は本公開版に含めません。設計資料中の中央実行の記述は旧案として扱ってください。
-
-以下は既存のコーパス分析機能の説明です。
-
-手元の日本語文書を集計し、文章表現と段落構造を比較するPythonのCLIです。SQLiteに本文と解析履歴を保存し、軽量なJSONプロファイルとMarkdownレポートを出力します。分析機能自体は外部APIやWeb UIを使いません。
-
-文章を磨くための入口は[プロジェクト内で完結する編集手順](docs/craft-guide.md)です。[評価された記事の構造分析](docs/research/reading-craft.md)を同梱し、段落の役割、説明の保留、語調・拍の変化、冒頭のひっかかりを記録します。環境側の日本語校正スキルは呼びません。個別フィードバックやローカルの比較実行記録は、この公開版には含めていません。
-
-最初は下のQuick Startを実行してください。比較・評価・改稿記録のコマンドは、その後に必要なものを選べます。設計上の判断と不具合の原因は[作業記録](docs/decisions.md)、採用した要件は[仕様書](docs/spec.md)に残しています。
-
-## 5分でサンプルを解析する
-
-Python 3.11以上が必要です。`python`がない環境では、仮想環境を作る最初のコマンドを`python3.12`などへ置き換えてください。
+curlが必要です。
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -e '.[dev,morphology]'
-python -m jlangbase analyze samples/ --profile magazine --out output/
+curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | sh
 ```
 
-Windows PowerShellでの有効化は `.venv\Scripts\Activate.ps1` です。`uv`を使う場合は以下でも準備できます。
+GitHubから必要なファイルを取得し、利用者のホームフォルダへインストールします。管理者権限は不要です。取得したスクリプトをそのまま実行するため、不安な場合は[スクリプトの内容](https://github.com/kathoc/bunmyaku/blob/main/install.sh)を先に読んでください。
 
-```bash
-uv venv --python 3.12 .venv
-uv pip install --python .venv/bin/python -e '.[dev,morphology]'
-.venv/bin/python -m jlangbase analyze samples/ --profile magazine --out output/
+### Windows（PowerShell）
+
+```powershell
+& ([scriptblock]::Create((Invoke-RestMethod https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.ps1)))
 ```
 
-結果は`output/profile.json`と`output/report.md`に出ます。`samples/magazine.jsonl`の12文書は動作確認用の自作生成文です。すべて`author_type: llm`と記録しており、人間の雑誌文章を代表するデータではありません。
+Git Bashや管理者権限は不要です。こちらも、取得した[PowerShellスクリプト](https://github.com/kathoc/bunmyaku/blob/main/install.ps1)をそのまま実行します。
 
-形態素解析が不要なら `pip install -e .` だけでも動きます。SudachiPyとcore辞書が未導入の場合は、文字・文・構造を解析し、token数は`null`、表現の一覧は空にします。未計測を頻度ゼロとは扱いません。`--backend basic`でこの動作を明示でき、`--backend sudachi`は未導入時にエラーを返します。
+インストーラーはCodex・Claude Code・Ollamaを探し、見つかったものに合わせて入口を用意します。CodexやClaude Codeが見つからない場合の指定方法、Ollamaの使い方、更新方法は[詳しい導入手順](docs/install.md)にあります。
 
-## 文書を投入し、ジャンルごとに見る
+**まだ試作段階です。** curlによる導入、各OSでのインストール、各AIからの自動起動は、動作検証を終えていません。
 
-```bash
-python -m jlangbase ingest samples/ --source-type magazine --platform local --dry-run
-python -m jlangbase ingest samples/ --source-type magazine
-python -m jlangbase analyze --source-type magazine
-python -m jlangbase expressions --source-type magazine --top 10
-python -m jlangbase build-profile --source-type magazine --out output/magazine.json --compact
-```
+## こんなときに使います
 
-入力はUTF-8のtxt、md、jsonlです。BOMも許容します。JSONLは1行1文書で、文字列の`text`が必須です。その他のメタデータは保存されます。
+- 記事を書いてもらったが、タイトルと中身がずれている。
+- 文章は整っているのに、先を読みたくならない。
+- 説明を足すほど、くどくなってしまう。
+- 自分らしい言い回しまで、無難な表現に直されてしまう。
+- 前に伝えた修正の理由を、次の作文にも生かしたい。
 
-```json
-{"text":"本文です。", "source_type":"magazine", "author_type":"human", "published_at":"2026-09-01", "source_ref":"自分の資料名", "topic":"ゲーム"}
-```
+新しい記事を書くときにも、手元の原稿を少し直すときにも使うことを想定しています。
 
-同じ本文は全ジャンル共通のハッシュで重複排除し、最初のメタデータを維持します。JSONL内の`source_type`はCLIの既定値より優先されます。投入件数と追加・重複・空文書・失敗件数を表示し、壊れた行やファイルがあっても後続を処理します。失敗があれば終了コード1、設定や入力パスなどのエラーは2です。
+## 文章をどう変えたいのか
 
-`--db 任意のパス`でDBを切り替えられます。既定は`data/processed/corpus.sqlite3`です。`analyze パス`は投入後、指定ジャンルのDB内全文書を解析します。そのパスだけを調べたい場合は別DBを指定してください。`build-profile`は最新の解析runを使うため、文書を追加したら先に`analyze`を実行します。
+目指しているのは、すべてをきれいに書き直すことではありません。意味が通じにくければ、説明を足す前に、文のつながりや言葉の順番を見直す。書いている途中で面白い発見があれば、その先の構成を考え直す。元の文章のよさを残しながら、必要なところに手を入れるための実験です。まだ開発途中で、入れれば必ず文章がよくなるものではありません。定期的な自動改善や自動更新も、現時点では使えません。
 
-## 人間文と生成文を比較する
+たとえば、「説明を増やして」と頼む代わりに、こう相談できます。
 
-```bash
-python -m jlangbase compare-human-llm human.jsonl llm.jsonl --out output/comparison
-python -m jlangbase compare-human-llm llm.jsonl --human-source magazine --out output/comparison
-```
+> この段落は少し分かりにくい。でも、説明くさくはしたくない。意味が通る最小限の直し方を考えて。
 
-JSONとMarkdownに、1万tokenあたりの頻度、比率、頻度差、文書カバレッジの差を出します。基準頻度が0の場合は比率を`null`とし、理由を付けます。`overrepresented_in_llm`と`underrepresented_in_llm`は指定した2コーパス間の差であり、著者がAIかどうかの判定ではありません。
+bunmyakuは、こうした依頼に対して、何が伝わっていないのか、何を残したいのかを分けて考える手順を渡します。
 
-## 初稿・改稿・基準文を同じ条件で評価する
+## 裏側では何をしているのか
 
-```bash
-python -m jlangbase evaluate \
-  --reference eval_cases/super_mario/reference \
-  --before eval_cases/super_mario/versions/00_initial.md \
-  --after eval_cases/super_mario/versions/02_structure.md \
-  --weights config/evaluation.json --out output/evaluation
-```
+最初に、誰に何を伝える文章なのかを整理します。記事なら、タイトルが読者に約束している内容も確かめます。
 
-距離は0〜1で、0ほど基準の分布に近いことを示します。文長、文字種、接続候補、文末、n-gramに加え、段落長、段落内文数、冒頭と末尾の比率などを内訳として出します。重みは`config/evaluation.json`で変更できます。未計測の指標は除外し、残りの重みを再正規化します。
+そのうえで、段落を書くたびに「書いてみて何に気づいたか」を拾い、その先の構成を考え直します。最初から結論を決めて、すべての段落をそこへ向かわせるだけにはしません。ただし、考え方が変わっても、確認済みの事実を都合よく変えることは許しません。
 
-語彙や表現の差には題材も影響します。構成が良くなったか、説明が正しいかを総合距離だけで判断しないでください。
+推敲では、言葉、文のつながり、段落、記事全体のどこに問題があるかを分けて扱います。利用者の修正は、直した理由や使える場面と一緒に端末内へ記録できます。一度うまくいった言い方を、すべての文章に押し付けるための記録ではありません。
 
-## マリオの文章を、表現と構成の両方から記録する
+## どこで使えるのか
 
-```bash
-python -m jlangbase record-experiment eval_cases/super_mario --weights config/evaluation.json
-```
-
-実験には、抽象的な初稿、表現を見直した版、構成も見直した版があります。`eval_cases/super_mario/manifest.json`に各版の変更意図と、主張・具体例・段落間の接続・限定・結論についての注釈を残しています。注釈には本文中の根拠と解釈の確信度を付けます。
-
-実行ごとに`records/日時-ID/`へ本文、ハッシュ、プロファイル、構造、指標別評価、`trajectory.md`を保存します。過去の記録は残り、`records/latest.json`が最新の保存先を示します。続きを試すときは、新しい本文とmanifestの版を追加して再実行してください。別の題材でも同じ形式を使えます。
-
-3版と基準文はすべてAI生成です。人間コーパスを用いた独立評価ではありません。構成の注釈も生成者自身による解釈であり、読み手による評価とは分けています。
-
-## 同じ長さの期間を比較する
-
-```bash
-python -m jlangbase diff --source-type social --from 2026-09-01 --to 2026-10-01 \
-  --thresholds config/diff.json --out output/diff
-```
-
-この例は`[2026-08-02, 2026-09-01)`と`[2026-09-01, 2026-10-01)`の30日ずつを比べます。開始日時を含み、終了日時を含みません。公開日時を優先し、なければ収集日時を使います。日時にタイムゾーンがない場合はUTCとして扱います。両期間に文書が必要です。
-
-emerging、rising、stable、declining、sparseは設定ファイルの閾値による分類です。少数の文書から「流行」とは判断しません。
-
-## 指標の読み方と制約
-
-| 用語 | この実装での意味 |
+| 使うもの | 使い方 |
 | --- | --- |
-| token | Sudachiの分割単位。分母に句読点を含み、URLと空白を除く |
-| n-gram | 連続する1〜5 token。文の境界をまたがない |
-| 文書カバレッジ | 表現を含む文書数を全対象文書数で割った値 |
-| profile | 上位表現と集約値を含む参照用JSON |
-| run | 解析器・辞書・対象本文ハッシュを記録した処理単位 |
+| Codex | 作文用スキルを登録し、普段どおり執筆や推敲を依頼します。 |
+| Claude Code | 同じ共通手順を使う作文用スキルを登録します。 |
+| Ollama | 専用コマンドから、端末のモデルで段落ごとの生成を実行します。 |
 
-文字数は空白と記号を含むUnicode文字数です。文長には句読点とMarkdownの見出し文字も含みます。構造の集計は空行を段落境界とし、ATX見出しとコードフェンスを段落から除きます。Setext見出しやHTMLの構造は解釈しません。接続候補は文頭の固定表現と接続詞品詞による抽出で、意味の判定はしません。
+CodexとClaude Codeでは、利用中のAI自身が文章を書きます。このために別の生成APIを契約する必要はありません。スキルが自動で選ばれるかどうかはAIの判断に依存します。
 
-同じ本文・メタデータ・解析器・設定で統計は再現します。実行日時とrun_id、記録フォルダ名は実行ごとに変わります。辞書を更新すると分割結果が変わるため、バージョンを揃えて比較してください。
+Ollamaでは、通常の会話すべてに自動適用されるわけではありません。モデルと、文章の題材・確認済みの事実をまとめた初期設定を用意し、専用コマンドを使います。
 
-## 検証する
+## 時代に合わせて変わっていくのか
 
-```bash
-python -m pytest -q
-python -m compileall -q src/jlangbase
-```
+そのための機能も計画しています。ただし、**定期的に調査し、文章のルールを更新する機能は、まだ実装していません。** 現在できるのは、同梱の研究資料を参照することや、個人の修正を理由と一緒に端末内へ記録することです。
 
-失敗報告には、実行コマンド、終了コード、解析器・辞書バージョンを添えてください。公開できない本文は報告へ貼らず、再現用の短い自作文に置き換えられるか確認してください。
+今後は、各利用者の端末で定期的に新しい文献や用例を調べ、今のルールと変更案で書いた文章を比較できるようにしたいと考えています。新しい表現だから採用するのではなく、読者や媒体に合っているか、伝わりやすさを損なわないかを見て、利用者が採用を判断する形です。
+
+原稿や個人の修正履歴を中央へ集めず、変更を見送ったり、前のルールへ戻したりできることも目指しています。これらも今後の実装です。AIのモデル本体を自動で再学習する仕組みではありません。
+
+## 原稿や修正履歴はどこに保存されるのか
+
+専用の保存先は、各端末の`~/.agents/memory/jlangbase/`です。GitHubなどへ個人の原稿や履歴を集める機能は設けていません。現時点では、定期的に研究を進めてルールを更新する処理も動きません。
+
+ただし、**端末に保存することと、外部へ一切通信しないことは別です。** CodexやClaude Codeへ原稿を読ませれば、そのサービスへの入力になります。機密文書を扱う場合は、利用するAIの設定やデータの取り扱いも確認してください。
+
+## このREADMEについて
+
+**このREADMEも、bunmyakuを使って書いています。** 導入文は、実際に段落を生成してから発見を抽出し、見方と構成を更新する仕組みを使って作りました。その結果をもとに、操作案内などを含むREADME全体を会話中のアシスタントが編集しています。
+
+これは使い方の実例であり、効果の証明ではありません。同じAIが執筆と見直しを担当しており、独立した読者評価はまだ行っていません。
+
+## もっと知りたい方へ
+
+技術の仕組みと現時点の問題点を掘り下げたnote記事も、bunmyakuを使って作成しました。現在は下書きで、まだ公開していません。公開後に記事へのリンクを追記します。
+
+- [参考文献・参考プロジェクト](docs/references.md)
+- [文章を考え直す仕組み](docs/discovery-loop-guide.md)
+- [段落の生成・振り返り・状態更新のコード](src/jlangbase/discovery_loop.py)
+- [研究と実装の記録](docs/decisions.md)
+
+過去の資料には、中央で改善処理を動かす案が残っています。現在は、各利用者の端末内で管理する方針です。資料に書かれた計画と、今使える機能は区別してください。

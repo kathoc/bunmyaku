@@ -2,7 +2,48 @@
 
 ## 最初の一回
 
-GitHubの配布物を取得・展開したディレクトリで実行する。Python 3.11以上が必要。Windowsではpythonの代わりにpyを使える。
+Python 3.11以上が必要です。macOS・Linuxではcurlを使います。
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | sh
+```
+
+スクリプトを先に読んでから実行したい場合は、未使用のファイル名で保存してください。
+
+```bash
+curl -fSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh -o bunmyaku-install.sh
+```
+
+保存したファイルをエディターで開き、内容に納得したら`sh bunmyaku-install.sh`を実行します。ダウンロードに失敗した場合は実行しないでください。公開mainの最新版を取得します。署名検証や固定バージョン指定は未実装です。
+
+### Windows（PowerShell）
+
+Windows PowerShell 5.1以降を対象とした入口です。Git Bashは不要です。
+
+```powershell
+& ([scriptblock]::Create((Invoke-RestMethod https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.ps1)))
+```
+
+内容を読んでから実行する場合は、まず取得したスクリプトを表示します。
+
+```powershell
+$installer = Invoke-RestMethod https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.ps1 -ErrorAction Stop
+$installer
+```
+
+表示した内容に納得したら、`& ([scriptblock]::Create($installer))`を実行します。管理者権限や実行ポリシーの変更は不要です。
+
+明示的な更新は次のコマンドです。
+
+```powershell
+& ([scriptblock]::Create((Invoke-RestMethod https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.ps1))) -Update
+```
+
+ツールを指定する場合は`-Tools codex,claude,ollama`ではなく、文字列として`-Tools 'codex,claude,ollama'`を渡します。導入先を変更する場合は`-InstallHome 'C:\\bunmyaku-sandbox'`、導入先を変更せず予定を見る場合は`-DryRun`を付けます。`-DryRun`でも配布物の取得と一時展開は行います。
+
+### ダウンロード済みの配布物から導入する場合
+
+GitHubの配布物を取得・展開したフォルダでも導入できます。Windowsでは`py install.py`、ほかのOSでは次のコマンドを使います。
 
 ```bash
 python install.py
@@ -11,10 +52,16 @@ python install.py
 PATH上のcodex/claude/ollamaを検出し、使える入口を登録する。アプリだけの導入などで検出されない場合は明示する。
 
 ```bash
-python install.py --tools codex,claude,ollama
+curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | sh -s -- --tools codex,claude,ollama
 ```
 
-確認のみは--dry-run、隔離先は--home。導入済みの環境は、新しい配布物で`python install.py --update`を実行する。更新は明示操作であり、自動ダウンロードはまだ実装していない。コードの旧版と導入履歴を保持し、個人メモリーは書き換えない。途中のファイル書き込み失敗を含む完全なトランザクション復旧は未実装。競合する既存ファイルは上書きせず停止する。
+導入済みの環境は、同じ入口から明示的に更新できます。
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | sh -s -- --update
+```
+
+確認のみは`--dry-run`、隔離先は`--home`です。curl方式の`--dry-run`でも配布物の取得と一時展開は行いますが、導入先は変更しません。取得済みの配布物なら`python install.py --update`でも更新できます。定期的な自動更新ではありません。コードの旧版と導入履歴を保持し、個人メモリーは書き換えません。途中のファイル書き込み失敗を含む完全なトランザクション復旧は未実装です。競合する既存ファイルは上書きせず停止します。
 
 ## Codex / Claude Code
 
@@ -40,17 +87,9 @@ Ollamaとの通信はループバックのHTTP、プロキシ・リダイレク�
 
 `natural-japanese feedback record.json`で、症状・変更前後・理由・適用条件・user/modelの区分を保存する。これは学習候補の蓄積であり、モデル本体の学習ではない。Codex/Claudeへ原稿を入力すれば、そのサービスへの入力になりうる点は別問題。
 
-## 中央の定期改善
+## 定期的な改善について
 
-公開先リポジトリで管理者が一度だけ設定する。
-
-1. `.github/workflows/central-improvement.yml`をデフォルトブランチに配置する。
-2. GitHub SecretにOPENAI_API_KEYを登録する。利用者各端末に配布しない。
-3. Repository VariableのENABLE_CENTRAL_RESEARCHをtrueにする。未設定なら実行しない。
-4. 週次月曜03:23 UTC、または手動で候補報告を作る。実行費用は中央管理者側に発生する。
-5. Actionsのartifactを人間が読み、比較・読者評価を経て採用する。候補生成は自動、採用・公開版の作成は手動。
-
-成果物は報告一つだけをアップロードする。秘密情報や端末の個人履歴を収集しない。自動PR・自動公開・自動採用は行わない。現状は公開先未指定で、pushも中央ジョブの有効化もしていない。
+各利用者の端末で調査・比較・採用判断を行う方針です。中央で個人データを集める仕組みは設けません。端末内の定期調査、改善案の自動比較、ルールの採用・復帰はまだ未実装です。上の`--update`は公開されたコードを手動で更新する操作であり、文章のルールを自動で学習する処理ではありません。
 
 ## 参照と未検証範囲
 
