@@ -30,8 +30,16 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="共通日本語執筆・個人履歴")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("context")
+    purpose = sub.add_parser("purpose-start")
+    purpose.add_argument("path", type=Path)
     feedback = sub.add_parser("feedback")
     feedback.add_argument("path", type=Path)
+    reader = sub.add_parser("editor-reader-feedback")
+    reader.add_argument("candidate", type=Path)
+    reader.add_argument("--feedback", required=True, type=Path)
+    loop_reader = sub.add_parser("loop-reader-feedback")
+    loop_reader.add_argument("candidate", type=Path, help="v2のstate JSON")
+    loop_reader.add_argument("--feedback", required=True, type=Path)
     write = sub.add_parser("ollama-write")
     write.add_argument("title")
     write.add_argument("--seed", required=True, type=Path, help="確認済み事実と初期状態のJSON")
@@ -42,11 +50,39 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         if args.command == "context":
-            print(json.dumps({"rules": files("jlangbase").joinpath("resources/writing-workflow.md").read_text(encoding="utf-8"),
+            from .purpose import context as purpose_context
+            print(json.dumps({"project_purpose": purpose_context(),
+                              "rules": files("jlangbase").joinpath("resources/writing-workflow.md").read_text(encoding="utf-8"),
                               "resources": str(files("jlangbase").joinpath("resources")),
                               "memory_index": str(memory_root() / "INDEX.md"),
                               "corrections": str(memory_root() / "corrections"),
                               "sessions": str(memory_root() / "sessions")}, ensure_ascii=False, indent=2))
+        elif args.command == "purpose-start":
+            from .purpose import start_work
+            record = start_work(json.loads(args.path.read_text(encoding="utf-8-sig")))
+            record["recorded_at"] = datetime.now(timezone.utc).isoformat()
+            path = memory_root() / "work" / (uuid4().hex + ".json")
+            save_new(path, record)
+            index = memory_root() / "INDEX.md"
+            index.parent.mkdir(parents=True, exist_ok=True)
+            with index.open("a", encoding="utf-8") as handle:
+                handle.write(f"- work/{path.name}: 作業の位置づけ ({record['area']})\n")
+            print(path)
+        elif args.command in {"editor-reader-feedback", "loop-reader-feedback"}:
+            if args.command == "loop-reader-feedback":
+                from .reader_loop import reader_feedback
+            else:
+                from .editorial_explanation import reader_feedback
+            record = reader_feedback(json.loads(args.candidate.read_text(encoding="utf-8-sig")),
+                                     json.loads(args.feedback.read_text(encoding="utf-8-sig")))
+            record["recorded_at"] = datetime.now(timezone.utc).isoformat()
+            path = memory_root() / "reader-feedback" / (uuid4().hex + ".json")
+            save_new(path, record)
+            index = memory_root() / "INDEX.md"
+            index.parent.mkdir(parents=True, exist_ok=True)
+            with index.open("a", encoding="utf-8") as handle:
+                handle.write(f"- reader-feedback/{path.name}: 読解の記録 ({record['origin']})\n")
+            print(path)
         elif args.command == "feedback":
             record = json.loads(args.path.read_text(encoding="utf-8-sig"))
             required = ("symptom", "before", "after", "reason", "applicability")

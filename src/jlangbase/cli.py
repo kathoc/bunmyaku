@@ -80,12 +80,17 @@ def parser():
     results.add_argument("study", type=Path)
     results.add_argument("--responses", required=True, type=Path)
     results.add_argument("--out", type=Path, default=Path("output/reader-results.json"))
-    for name in ("loop-start", "loop-request", "loop-step"):
+    for name in ("loop-start", "loop-request", "loop-functions", "loop-review", "loop-step"):
         loop = commands.add_parser(name, help="段落から発見し、認識と未執筆計画を更新")
         loop.add_argument("path", type=Path, help="seedまたはstate JSON")
         loop.add_argument("--out", required=True, type=Path, help="新規JSON。既存ファイルへの上書き不可")
         if name == "loop-request":
             loop.add_argument("--paragraph", type=Path, help="生成後の本文を指定すると発見抽出の要求を出力")
+            loop.add_argument("--reading-review", type=Path, help="v2の読解判断JSON。採用本文はここから取得")
+        if name in {"loop-review", "loop-functions"}:
+            loop.add_argument("--paragraph", required=True, type=Path, help="修正前の草案")
+        if name == "loop-review":
+            loop.add_argument("--function-review", type=Path, help="新規読解版2では修正前の働きの分析JSONが必要")
         if name == "loop-step":
             loop.add_argument("--response", required=True, type=Path)
     return root
@@ -96,12 +101,27 @@ def corpus(path, label, analyzer):
 
 
 def execute(args):
-    if args.command in {"loop-start", "loop-request", "loop-step"}:
+    if args.command in {"loop-start", "loop-request", "loop-functions", "loop-review", "loop-step"}:
         state = json.loads(args.path.read_text(encoding="utf-8-sig"))
         if args.command == "loop-start":
             result = start(state)
+        elif args.command == "loop-functions":
+            from .reader_loop import function_request
+            result = function_request(state, args.paragraph.read_text(encoding="utf-8-sig").strip())
+        elif args.command == "loop-review":
+            from .reader_loop import reading_request
+            analysis = json.loads(args.function_review.read_text(encoding="utf-8-sig")) if args.function_review else None
+            result = reading_request(state, args.paragraph.read_text(encoding="utf-8-sig").strip(), analysis)
         elif args.command == "loop-request":
-            result = reflection_request(state, args.paragraph.read_text(encoding="utf-8-sig").strip()) if args.paragraph else next_request(state)
+            if args.reading_review:
+                from .reader_loop import validate_review
+                review = json.loads(args.reading_review.read_text(encoding="utf-8-sig"))
+                paragraph = validate_review(state, review)
+                if args.paragraph and args.paragraph.read_text(encoding="utf-8-sig").strip() != paragraph.strip():
+                    raise ValueError("--paragraphは採用本文と一致する必要があります")
+                result = reflection_request(state, paragraph, review)
+            else:
+                result = reflection_request(state, args.paragraph.read_text(encoding="utf-8-sig").strip()) if args.paragraph else next_request(state)
         else:
             result = advance(state, json.loads(args.response.read_text(encoding="utf-8-sig")))
         save_new(args.out, result)

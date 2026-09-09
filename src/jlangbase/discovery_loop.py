@@ -53,7 +53,12 @@ def start(seed):
     narrator(seed.get("NARRATOR_STATE"))
     questions(seed.get("open_questions"))
     plan(seed.get("remaining_plan"))
-    return {"schema_version": 1, "question": seed["question"], "destination": seed["destination"],
+    from .reader_loop import initial_reader
+    title = seed.get("title", seed["question"])
+    require(nonempty(title), "titleは空でない文字列です")
+    return {"schema_version": 2, "question": seed["question"], "destination": seed["destination"],
+            "title": title, "READER_STATE": initial_reader(seed), "reading_history": [],
+            "reader_review_version": 2,
             "WORLD_STATE": deepcopy(world), "world_hash": fingerprint(world),
             "NARRATOR_STATE": deepcopy(seed["NARRATOR_STATE"]),
             "open_questions": deepcopy(seed["open_questions"]),
@@ -62,18 +67,32 @@ def start(seed):
 
 
 def check_state(state):
-    require(isinstance(state, dict) and state.get("schema_version") == 1, "未対応のstateです")
+    require(isinstance(state, dict) and state.get("schema_version") in {1, 2}, "未対応のstateです")
     require(fingerprint(state.get("WORLD_STATE")) == state.get("world_hash"), "WORLD_STATEが変更されています")
     require(state.get("status") == "active", "停止済みstateは継続できません。履歴を残して別セッションを開始してください")
     require(isinstance(state.get("paragraphs"), list) and isinstance(state.get("history"), list), "不正な履歴です")
     narrator(state.get("NARRATOR_STATE"))
     questions(state.get("open_questions"))
     plan(state.get("remaining_plan"))
+    if state["schema_version"] == 2:
+        from .reader_loop import validate_reader
+        require(type(state.get("reader_review_version", 1)) is int and
+                state.get("reader_review_version", 1) in {1, 2}, "未対応の読解判断バージョンです")
+        require(nonempty(state.get("title")), "titleが必要です")
+        require(isinstance(state.get("reading_history"), list) and
+                len(state["reading_history"]) == len(state["paragraphs"]), "読解判断の履歴が不正です")
+        validate_reader(state.get("READER_STATE"), state["paragraphs"])
 
 
 def next_request(state):
     check_state(state)
+    from .purpose import context
     return {"state_hash": fingerprint(state), "stage": "write_one_paragraph",
+            "project_purpose": context(),
+            **({"title": state["title"], "READER_STATE": deepcopy(state["READER_STATE"]),
+                "reader_review_version": state.get("reader_review_version", 1),
+                "reader_instruction": "説明済みは理解済みではない。現在の疑問と未説明の前提を見て、次の段落の役割を選ぶ。"}
+               if state["schema_version"] == 2 else {}),
             "question": state["question"], "destination": state["destination"],
             "WORLD_STATE": deepcopy(state["WORLD_STATE"]),
             "NARRATOR_STATE": deepcopy(state["NARRATOR_STATE"]),
@@ -87,8 +106,12 @@ def next_request(state):
                 "本文のみを返す。発見の抽出と再計画は、この本文を書いた後の別工程で行う。"]}
 
 
-def reflection_request(state, paragraph):
+def reflection_request(state, paragraph, reading_review=None):
     request = next_request(state)
+    if state["schema_version"] == 2:
+        from .reader_loop import validate_review
+        require(validate_review(state, reading_review) == paragraph,
+                "採用された本文から発見を抽出してください")
     request.update(stage="reflect_after_writing", paragraph=paragraph)
     request["instructions"] = [
         "いま書かれた段落から発見を抽出する。最初の計画への適合ではなく、見方がどう揺さぶられたかを見る。",
@@ -106,6 +129,10 @@ def reflection_request(state, paragraph):
         "open_questions": deepcopy(state["open_questions"]), "remaining_plan": [],
         "decision": "continue|finish|stalled|needs_evidence", "reason": "判断理由",
         "preparation": "発見なしで進む場合の必要性", "arrival": "終了時の到達内容"}
+    if state["schema_version"] == 2:
+        request["reading_review"] = deepcopy(reading_review)
+        request["response_contract"]["reading_review"] = deepcopy(reading_review)
+        request["instructions"].append("reading_reviewは変更せず返す。残る読者の疑問も考慮して続きを再計画する。")
     return request
 
 
@@ -117,6 +144,10 @@ def advance(state, response):
             "固定情報と既出本文は応答で変更できません")
     paragraph = response.get("paragraph")
     require(nonempty(paragraph) and "\n" not in paragraph.strip() and "\r" not in paragraph.strip(), "本文は改行を含まない1段落です")
+    if state["schema_version"] == 2:
+        from .reader_loop import validate_review
+        require(validate_review(state, response.get("reading_review")) == paragraph,
+                "本文と読解判断の採用案が一致しません")
     decision = response.get("decision")
     require(decision in {"continue", "finish", "stalled", "needs_evidence"}, "不正なdecisionです")
     require(nonempty(response.get("reason")), "判断理由が必要です")
@@ -173,21 +204,45 @@ def advance(state, response):
     result.update(NARRATOR_STATE=deepcopy(updated), open_questions=deepcopy(pending),
                   remaining_plan=list(remainder), status={"continue": "active", "finish": "complete"}.get(decision, decision))
     result["paragraphs"].append(paragraph.strip())
+    if state["schema_version"] == 2:
+        from .reader_loop import update_reader
+        result["READER_STATE"] = update_reader(state, response["reading_review"])
+        result["reading_history"].append(deepcopy(response["reading_review"]))
     result["history"].append({"accepted": True, "response": deepcopy(response),
                               "effective_decision": decision, "narrator_before": deepcopy(state["NARRATOR_STATE"])})
     return result
 
 
-def run_loop(state, writer, reflector, max_steps):
+def run_loop(state, writer, reflector, max_steps, reviewer=None, function_reviewer=None):
     """Callbacks perform generation; budget exhaustion never means completion."""
     require(type(max_steps) is int and max_steps > 0, "安全上限max_stepsは正の整数です")
     current = deepcopy(state)
+    if current.get("schema_version") == 2:
+        require(callable(reviewer), "v2には読解判断を返すreviewerが必要です")
+        if current.get("reader_review_version", 1) == 2:
+            require(callable(function_reviewer), "読解版2には修正前の文の働きを読むfunction_reviewerが必要です")
     for _ in range(max_steps):
         if current.get("status") != "active":
             return current
         paragraph = writer(next_request(current))
         require(nonempty(paragraph), "writerは本文の文字列を返してください")
-        response = reflector(reflection_request(current, paragraph))
+        reading_review = None
+        if current["schema_version"] == 2:
+            from .reader_loop import reading_request, validate_review
+            draft = paragraph
+            function_review = None
+            if current.get("reader_review_version", 1) == 2:
+                from .reader_loop import function_request
+                function_review = function_reviewer(function_request(current, draft))
+            reading_review = reviewer(reading_request(current, draft, function_review))
+            paragraph = validate_review(current, reading_review)
+            if current.get("reader_review_version", 1) == 2:
+                require(reading_review.get("function_review") == function_review, "reviewerは修正前の働きの記録を変更できません")
+            require(reading_review["draft"] == draft, "reviewerは元の草案を改変できません")
+        response = reflector(reflection_request(current, paragraph, reading_review))
+        if current["schema_version"] == 2:
+            require(isinstance(response, dict) and response.get("reading_review") == reading_review,
+                    "reflectorは読解判断を改変できません")
         require(isinstance(response, dict) and response.get("paragraph") == paragraph,
                 "reflectorは生成された段落を改変できません")
         current = advance(current, response)

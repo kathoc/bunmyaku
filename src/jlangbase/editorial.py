@@ -80,9 +80,14 @@ def prepare(text, brief):
         units.append({**material, "kind": "material"})
     indexed(units, "source units")
     require(bool(units), "No editorial material")
-    return seal({"stage": "selection", "editorial_version": 2, "source_hash": digest(text), "source_text": text,
+    instruction_names = ("editorial-workflow.md", "editorial-meaning.md", "editorial-register.md",
+                         "editorial-voice.md", "editorial-sections.md", "editorial-explanation.md",
+                         "project-purpose.md")
+    instructions = "\n\n".join(files("jlangbase").joinpath("resources", name).read_text(encoding="utf-8")
+                                 for name in instruction_names)
+    return seal({"stage": "selection", "editorial_version": 4, "source_hash": digest(text), "source_text": text,
                  "brief": brief, "units": units,
-                 "instructions": files("jlangbase").joinpath("resources/editorial-workflow.md").read_text(encoding="utf-8")})
+                 "instructions": instructions})
 
 
 def select(request, decisions):
@@ -119,7 +124,18 @@ def select(request, decisions):
                                  "unchanged_reason": "or specify setup/departure/settling references with effect/alternative/choice_reason"},
                      "reader_questions": [],
                      "meaning_coverage": [],
-                     "reading_path": []}})
+                     "reading_path": [],
+                     **({"paragraph_boundaries": [{"paragraph_id": "v001", "role": "purpose here",
+                                                    "reason": "why break here"}],
+                         "section_layout": [{"heading_id": "heading block ID", "draft_heading": "provisional heading",
+                                             "body_ids": ["v001"], "reconsideration": "decision after writing body"}]}
+                        if request.get("editorial_version", 1) >= 3 else {}),
+                     **({"explanation_review": {"examples": [], "no_examples_reason": "Explain why plain prose suffices, or record candidates using editorial-explanation.md"},
+                         "reader_checks": [{"id": "r1", "target": {"paragraph_id": "v001", "quote": "exact excerpt"},
+                                            "question": "Ask the reader to explain the main idea",
+                                            "expected_meaning": "Meaning supported by the target excerpt",
+                                            "misunderstanding": "What must not be inferred", "example_ids": []}]}
+                        if request.get("editorial_version", 1) >= 4 else {})}})
 
 
 def accept(composition, response):
@@ -182,12 +198,21 @@ def accept(composition, response):
     if request.get("editorial_version", 1) >= 2:
         from .editorial_strategy import validate_reading_path
         validate_reading_path(composition, response)
+    if request.get("editorial_version", 1) >= 3:
+        from .editorial_sections import validate_layout
+        validate_layout(response)
+    if request.get("editorial_version", 1) >= 4:
+        from .editorial_explanation import validate_explanation
+        validate_explanation(composition, response)
     markdown = "# " + request["brief"]["title"] + "\n\n" + "\n\n".join(b["text"] for b in blocks) + "\n"
     prose = parse_paragraphs(markdown)
     return {"status": "editorial_candidate", "quality_improved": None,
             "source_hash": request["source_hash"], "composition_hash": composition["hash"],
             "decisions": composition["decisions"], "strategy": composition.get("strategy"),
             "response": response, "markdown": markdown,
+            **({"reader_evaluation": {"status": "pending", "article_hash": digest(markdown),
+                                      "answers": None}}
+               if request.get("editorial_version", 1) >= 4 else {}),
             "surface_observations": {"paragraph_characters": [len(p["text"]) for p in prose],
                                      "sentence_characters": [p["sentence_lengths"] for p in prose],
                                      "actions": dict(Counter(actions.values()))},
