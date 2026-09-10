@@ -5,10 +5,11 @@ bunmyakuは実験プロジェクトです。実装の追加と、文章の品質
 ## 2026-09-10
 
 - 新規執筆を利用中の環境へ委譲する`writing-*`コマンドを追加しました。CodexではCodex、Claude CodeではClaude、OllamaではOllamaの担当を使い、執筆、点検、差し戻し、全文編集、最終点検、発見の引き継ぎを管理します。合格稿を書き出します。
+- Windowsで同梱ルールを読み出せない不具合を修正しました。配布ファイルのパス表記をOSに依存しない形へ統一しました。
 - GitHubの公開入口から一式を導入できます。macOS・Linuxでは`curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | sh`、Windows PowerShellでは`install.ps1`を使います。既存の導入はシェル入口に`--update`、PowerShell入口に`-Update`を付けて更新します。ツール指定はシェルの`--tools codex,claude,ollama`、PowerShellの`-Tools 'codex,claude,ollama'`です。手動更新で、個人メモリーは保持します。
-- GitHubと同じ構成のZIPを使ったLinuxの配布関連テスト5件と、全体108件のテストが成功しました。導入と旧公開版からの更新を含みます。
+- GitHubと同じ構成のZIPを使ったLinuxの配布関連テスト7件と、全体110件のテストが成功しました。導入と旧公開版からの更新を含みます。
 - Codexの実サブエージェントでは差し戻しから完成稿の書き出しまで確認しました。Ollamaでは初稿生成と不正な引用の拒否を確認しましたが、完走は未確認です。Claudeの実生成も未検証です。工程の動作確認であり、品質保証ではありません。
-- Linux・macOS・Windows向けのGitHub Actionsは実装済みですが、実行はpush後です。3OSでの成功はまだ確認していません。詳細は[仕様と検証結果](docs/agent-writing-spec.md)、[GitHub配布の検証記録](docs/reviews/github-distribution.md)、[導入案内](docs/install.md)を参照してください。この変更履歴自体もbunmyakuの執筆・点検・編集工程で作成しました。
+- Linux・macOS・Windowsの配布テストもGitHub Actionsで成功しました。公開GitHubからの新規導入・更新と、個人原稿の保持も確認しました。詳細は[仕様と検証結果](docs/agent-writing-spec.md)、[GitHub配布の検証記録](docs/reviews/github-distribution.md)、[導入案内](docs/install.md)を参照してください。この変更履歴はbunmyakuの執筆・点検・編集工程で作成し、公開後の修正と検証結果を追記しました。
 
 ## 2026-09-09
 

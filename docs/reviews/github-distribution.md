@@ -57,3 +57,11 @@ GitHub Actionsの3OSの結果も、完了したジョブのURLとともに追記
 最初の[3OSのCI](https://github.com/kathoc/bunmyaku/actions/runs/34440238469)ではLinuxとmacOSが成功し、Windowsが失敗した。Windowsの原因と修正は「Windows CIの初回失敗と修正」節に記録した。
 
 配布キーの正規化と回帰テスト2件を追加し、Linuxで`.venv/bin/pytest -q tests/test_agent_distribution.py tests/test_github_install.py`の7件が成功した。`git diff --check`も成功した。Windowsの実機上で原因が解消したことは、修正版をpushした後のCIで確認する。
+
+## 修正版の最終確認
+
+Windowsの修正を含むコミット[ee54ecf](https://github.com/kathoc/bunmyaku/commit/ee54ecf)をpushし、[CI 34440638501](https://github.com/kathoc/bunmyaku/actions/runs/34440638501)でLinux・macOS・Windowsの全ジョブが成功した。各OSで配布関連7件を実行した。Windowsの更新元は、前述のパス表現だけを補正した旧版相当の試験用ソースである。
+
+修正版の公開GitHubからも導入スクリプトとmain.zipを再取得し、Linuxの別の一時ホームへ新規導入・更新した。両方成功し、個人原稿を保持した。releaseは`73856fca48bcb0ca9b00`で、修正後のローカル配布対象と一致した。Codex・Claude・Ollamaのhost選択も確認した。この端末の導入済み環境も同じ版へ更新した。
+
+ローカルの全テストは110件成功。CHANGELOG.mdはbunmyakuの受理済み原稿を基に、公開後に確定したWindowsの修正・検証件数・3OSの結果だけを最小限追記した。9月9日の既存履歴は保持した。

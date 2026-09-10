@@ -28,7 +28,7 @@ Git Bashや管理者権限は不要です。こちらも、取得した[PowerShe
 
 インストーラーはCodex・Claude Code・Ollamaを探し、見つかったものに合わせて入口を用意します。CodexやClaude Codeが見つからない場合の指定方法、Ollamaの使い方、更新方法は[詳しい導入手順](docs/install.md)にあります。
 
-**まだ試作段階です。** Linuxでは、GitHubと同じ構成のZIPからの新規導入と、旧版からの更新を検証しました。macOS・Windowsの実行結果と、公開GitHubからの取得結果は[配布の検証記録](docs/reviews/github-distribution.md)に記載します。各AIによるスキルの自動選択は保証されません。
+**まだ試作段階です。** Linux・macOS・Windowsの配布テストが通過し、公開GitHubからの新規導入と更新も確認しました。確認した範囲は[配布の検証記録](docs/reviews/github-distribution.md)に記載しています。各AIによるスキルの自動選択は保証されません。
 
 ## こんなときに使います
 
