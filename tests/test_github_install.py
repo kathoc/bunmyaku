@@ -115,6 +115,17 @@ def test_github_zip_updates_pre_agent_release_and_preserves_records(tmp_path, ar
     source = tmp_path / "old source"
     with zipfile.ZipFile(old_zip) as archive_file:
         archive_file.extractall(source)
+    if os.name == "nt":
+        # The historical release could not install on Windows because resource
+        # keys used backslashes. Normalize only that fixture's keys to prepare
+        # its pre-agent state; the current installer is exercised unmodified.
+        old_distribution = source / "src/jlangbase/distribution.py"
+        old_code = old_distribution.read_text(encoding="utf-8")
+        assert old_code.count("str(p.relative_to(source))") == 1
+        old_distribution.write_text(
+            old_code.replace("str(p.relative_to(source))", "p.relative_to(source).as_posix()"),
+            encoding="utf-8",
+        )
     home = tmp_path / "existing home 日本語"
     result = subprocess.run([
         sys.executable, str(source / "install.py"), "--home", str(home), "--tools", "codex,claude,ollama",

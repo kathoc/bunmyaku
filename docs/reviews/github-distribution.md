@@ -37,3 +37,23 @@ sh install.sh --home "$check_root/home" --tools codex,claude,ollama --update
 ```
 
 GitHub Actionsの3OSの結果も、完了したジョブのURLとともに追記する。今回のCIは配布と状態管理の確認であり、ClaudeやOllamaでの文章品質を評価するものではない。
+
+## Windows CIの初回失敗と修正
+
+[初回CI 34440238469](https://github.com/kathoc/bunmyaku/actions/runs/34440238469)はLinux・macOSが成功し、Windowsで配布テスト5件が失敗した。失敗ログを/tmpへ保存し、各失敗の例外とdistribution.pyの該当箇所を読んだ。
+
+原因は、配布ファイルの辞書キーにOS依存の`str(relative_path)`を使っていたこと。Windowsでは`resources\\writing-workflow.md`になるが、取り出す側は`resources/writing-workflow.md`を指定するためKeyErrorが起きる。アーカイブの取得・展開は通過しており、ファイル内容の不足ではない。
+
+修正計画は、配布ファイルの収集を関数に切り出し、キーを`as_posix()`で統一する。Windows形式とPOSIX形式の相対パスを渡す回帰テストを追加し、同じキーと内容が得られることを確かめる。
+
+旧公開版227c024にも同じ不具合があり、Windowsでは旧版の新規導入が成立しない。Windowsの更新テストでは、旧版を準備する一時ソースに限り同じパス正規化を施し、旧機能の状態と個人記録を配置する。修正前旧版がWindowsへ導入できたとは扱わない。Linux・macOSでは公開旧版をそのまま使う。現行版の新規導入と更新は、いずれも本番インストーラーを使って検証する。
+
+## 公開GitHubからの取得結果
+
+コミット[ea2dbc9](https://github.com/kathoc/bunmyaku/commit/ea2dbc9)をpushした後、公開されたinstall.shを取得し、点検済みのローカルスクリプトとバイト単位で一致することを確認した。そのスクリプトから実際のGitHub main.zipをダウンロードし、一時ホームへ新規導入と--updateによる更新を実行した。
+
+両方成功し、導入されたreleaseは`cf5608c119efa19a5e2e`で、ローカルの配布対象と一致した。Codex・Claude・Ollamaの要求にそれぞれのhostが入り、Codex/Claudeのスキルも対応する担当を呼ぶ指示を持つ。更新前に置いた試験用原稿がそのまま保持された。ネットワーク取得を置き換えたテストとは別の確認である。
+
+最初の[3OSのCI](https://github.com/kathoc/bunmyaku/actions/runs/34440238469)ではLinuxとmacOSが成功し、Windowsが失敗した。Windowsの原因と修正は「Windows CIの初回失敗と修正」節に記録した。
+
+配布キーの正規化と回帰テスト2件を追加し、Linuxで`.venv/bin/pytest -q tests/test_agent_distribution.py tests/test_github_install.py`の7件が成功した。`git diff --check`も成功した。Windowsの実機上で原因が解消したことは、修正版をpushした後のCIで確認する。

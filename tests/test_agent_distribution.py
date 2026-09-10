@@ -1,12 +1,13 @@
 """Installed host routing and preservation of personal records."""
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
+from types import SimpleNamespace
 import subprocess
 import sys
 
 import pytest
 
-from jlangbase.distribution import install
+from jlangbase.distribution import install, package_files
 
 
 def invoke(home, *args):
@@ -91,3 +92,14 @@ def test_installed_launcher_accepts_only_reviewed_final_manuscript(tmp_path):
     before = output.read_bytes()
     assert invoke(home, "writing-handoff", session, "--out", output).returncode != 0
     assert output.read_bytes() == before
+
+
+@pytest.mark.parametrize("path_type", [PurePosixPath, PureWindowsPath])
+def test_package_resource_keys_are_portable(path_type):
+    relative = path_type("resources", "writing-workflow.md")
+    resource = SimpleNamespace(
+        relative_to=lambda source: relative, read_bytes=lambda: b"shared workflow",
+        is_file=lambda: True, suffix=".md", parts=relative.parts,
+    )
+    source = SimpleNamespace(rglob=lambda pattern: [resource])
+    assert package_files(source) == {"resources/writing-workflow.md": b"shared workflow"}

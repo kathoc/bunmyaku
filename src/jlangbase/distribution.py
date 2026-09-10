@@ -17,11 +17,16 @@ def private_root():
     return Path.home() / ".agents" / "memory" / "jlangbase"
 
 
+def package_files(source):
+    """Use portable resource keys regardless of the source filesystem."""
+    return {p.relative_to(source).as_posix(): p.read_bytes() for p in source.rglob("*")
+            if p.is_file() and p.suffix in {".py", ".json", ".md"} and "__pycache__" not in p.parts}
+
+
 def install(home, selected, update=False, dry_run=False):
     home = Path(home).expanduser().resolve()
     source = Path(__file__).resolve().parent
-    package = {str(p.relative_to(source)): p.read_bytes() for p in source.rglob("*")
-               if p.is_file() and p.suffix in {".py", ".json", ".md"} and "__pycache__" not in p.parts}
+    package = package_files(source)
     release = digest(b"".join(k.encode() + b"\0" + package[k] for k in sorted(package)))[:20]
     base = home / ".local" / "share" / "jlangbase"
     runtime = base / "releases" / release
