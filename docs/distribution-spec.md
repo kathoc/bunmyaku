@@ -1,5 +1,9 @@
 # 共通配布と中央改善の仕様
 
+## 2026-09-10の追加
+
+執筆代理の共通手順を`~/.agents/references/jlangbase-agent-writing.md`へ配置する。スキルの共通部分は維持し、CodexにはCodex、ClaudeにはClaudeの担当を呼ぶ指示とhost値を埋め込む。Ollamaは同梱writing-runから同じ共通状態管理を使う。`agent-writing-memory.md`と索引項目は初回だけ追加し、利用者の記憶本文を上書きしない。詳細と検証結果は[執筆代理仕様](agent-writing-spec.md)を参照。
+
 2026-09-07。対象はCodex、Claude Code、ローカルOllama。ユーザーは共通の改善を中央実行、個人の修正履歴を端末内保存と指定した。
 
 ## 設計と実装計画

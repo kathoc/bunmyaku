@@ -43,7 +43,7 @@ $installer
 
 ### ダウンロード済みの配布物から導入する場合
 
-GitHubの配布物を取得・展開したフォルダでも導入できます。Windowsでは`py install.py`、ほかのOSでは次のコマンドを使います。
+GitHubから実行コード、環境別スキル、共通手順、個人メモリーの入口をまとめて導入します。今回追加した執筆代理も含まれます。GitHubの配布物を取得・展開したフォルダでも導入できます。Windowsでは`py install.py`、ほかのOSでは次のコマンドを使います。
 
 ```bash
 python install.py
@@ -55,7 +55,7 @@ PATH上のcodex/claude/ollamaを検出し、使える入口を登録する。ア
 curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | sh -s -- --tools codex,claude,ollama
 ```
 
-導入済みの環境は、同じ入口から明示的に更新できます。
+導入済みの環境は、同じ入口から明示的に更新できます。新規導入のコマンドをそのまま再実行すると停止するため、次のように`--update`を付けてください。
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | sh -s -- --update
@@ -67,11 +67,25 @@ curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | s
 
 Codexには`~/.agents/skills/japanese-discovery-writing`、Claudeには`~/.claude/skills/japanese-discovery-writing`を配置する。その後は普段どおり記事執筆や推敲を依頼する。認識されなければ新しいセッションまたは再起動を試す。自動選択はモデルの判断であり、100%の起動保証ではない。既存AGENTS.md/CLAUDE.mdや他のスキルを変更・無効化しない。
 
-同梱スキルの手順に従えば、利用中のモデルが生成担当となるため別の生成APIは不要。共通Pythonコードは状態管理を担う。別の校正スキルと同時選択される可能性は残り、自動的に競合を解消したとは扱わない。
+新規執筆では、CodexからはCodexの、Claude CodeからはClaudeのサブエージェントへ依頼する。親AIがbunmyakuの共通コマンドで執筆指示、点検、差し戻し、全文編集を管理し、最終点検を通過した原稿を返す。別の生成APIは不要。サブエージェント機能が利用できない環境では理由を報告して停止する。別の校正スキルと同時選択される可能性は残る。
+
+呼び出しを明示したい場合は「bunmyaku（japanese-discovery-writing）で、○○について書いて」と依頼する。通常は親AIが依頼の整理とコマンド操作を行う。開発者向けの手順とbriefの例は[執筆代理の共通手順](../src/jlangbase/resources/agent-writing.md)にある。
 
 ## Ollama
 
 Ollamaサーバを起動し、ローカルモデルを用意する。インストーラーはサーバ起動やモデルダウンロードをしない。通常の`ollama run`を置き換えるものではない。
+
+執筆から全文編集・最終点検まで任せる場合は、[共通手順の例](../src/jlangbase/resources/agent-writing.md)に沿ってbrief.jsonを作り、次のコマンドを使う。執筆役・点検役・編集役を同じOllama接続で呼び出す。別モデルによる独立評価ではない。
+
+```bash
+natural-japanese writing-start brief.json --session ./writing-session --host ollama
+natural-japanese writing-run ./writing-session --model LOCAL_MODEL_NAME
+natural-japanese writing-handoff ./writing-session --out manuscript.md
+```
+
+最後の書き出しはcompleteになった場合だけ成功する。資料不足や修正上限で止まった場合は、セッションに残った理由を解決する。従来の段落生成だけを使う場合は次の入口も残る。
+
+writing-runはJSON Schemaで応答形式を指定し、文脈容量を既定16,384トークンで要求する。初回は`--context-length`で変更できる。入力が容量上限に達したときは停止し、本文を黙って省いて受理しない。意味の点検精度はモデルによるため、モデルの合格を事実保証には使わない。
 
 ```bash
 natural-japanese ollama-write "スーパーマリオとは何だったのか？" --seed eval_cases/super_mario/discovery-loop/seed.json --model LOCAL_MODEL_NAME
@@ -95,4 +109,6 @@ Ollamaとの通信はループバックのHTTP、プロキシ・リダイレク�
 
 [Codexスキル](https://learn.chatgpt.com/docs/build-skills)、[Claude Codeスキル](https://code.claude.com/docs/en/skills)、[Ollama chat API](https://docs.ollama.com/api/chat)、[構造化出力](https://docs.ollama.com/capabilities/structured-outputs)、[Codex GitHub Action](https://learn.chatgpt.com/docs/github-action)の関連節を参照した。
 
-今回の実装後のテスト・実インストール・実モデル生成・3OSでの動作確認は未実施。ソース実装があることと、各ツールで自動起動できたことを区別する。
+従来機能の検証状況は各仕様書に残す。2026-09-10追加の執筆代理については[仕様と検証結果](agent-writing-spec.md)を参照。ソース実装、隔離環境の動作確認、各ホストでの実モデル実行を区別する。
+
+GitHubのZIPを模した配布物による入口からの検証は、[配布の検証記録](reviews/github-distribution.md)にまとめます。Linuxでは新規導入・旧版更新・個人記録保持を確認しました。3OSのCIを追加していますが、実行済みの範囲は記録を参照してください。

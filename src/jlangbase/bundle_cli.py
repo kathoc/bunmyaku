@@ -17,6 +17,40 @@ def memory_root():
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0].startswith("writing-"):
+        from . import agent_writing
+        command = argv[0]
+        parser = argparse.ArgumentParser(prog=command)
+        if command == "writing-start":
+            parser.add_argument("brief", type=Path); parser.add_argument("--session", required=True)
+            parser.add_argument("--host", choices=("codex", "claude", "ollama"), required=True); parser.add_argument("--max-revisions", type=int, default=3)
+        elif command == "writing-task":
+            parser.add_argument("session"); parser.add_argument("--out", required=True, type=Path)
+        elif command == "writing-submit":
+            parser.add_argument("session"); parser.add_argument("response", type=Path); parser.add_argument("--agent-id", required=True)
+        elif command == "writing-handoff":
+            parser.add_argument("session"); parser.add_argument("--out", required=True, type=Path)
+        elif command == "writing-run":
+            parser.add_argument("session"); parser.add_argument("--model"); parser.add_argument("--endpoint"); parser.add_argument("--timeout", type=int, default=180); parser.add_argument("--max-actions", type=int, default=32)
+            parser.add_argument("--context-length", type=int, help="Ollamaの文脈容量。新規実行は既定16384トークン")
+        else:
+            raise SystemExit("未知のwritingコマンドです")
+        args = parser.parse_args(argv[1:])
+        try:
+            if command == "writing-start": result = agent_writing.start(json.loads(args.brief.read_text(encoding="utf-8-sig")), args.session, args.host, args.max_revisions)
+            elif command == "writing-task":
+                request = agent_writing.task(args.session)
+                save_new(args.out, request)
+                result = {"request": str(args.out), "role": request["role"], "phase": request["phase"]}
+            elif command == "writing-submit": result = agent_writing.submit(args.session, json.loads(args.response.read_text(encoding="utf-8-sig")), args.agent_id)
+            elif command == "writing-handoff": result = agent_writing.handoff(args.session, args.out)
+            else: result = agent_writing.run_ollama(args.session, args.model, args.endpoint, args.timeout, args.max_actions, args.context_length)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            if result.get("status") in {"blocked", "budget_exhausted"}:
+                return 1
+            return 1 if command == "writing-run" and result.get("status") != "complete" else 0
+        except (ValueError, OSError, KeyError, TypeError) as exc:
+            print(f"エラー: {exc}", file=sys.stderr); return 2
     if argv and argv[0] in {"editor-request", "editor-select", "editor-apply"}:
         from .editorial import main as editorial_main
         try:
@@ -27,7 +61,7 @@ def main(argv=None):
     if argv and argv[0] == "engine":
         from .cli import main as engine_main
         return engine_main(argv[1:])
-    parser = argparse.ArgumentParser(description="共通日本語執筆・個人履歴")
+    parser = argparse.ArgumentParser(description="共通日本語執筆・個人履歴（writing-start/task/submit/handoff/run で代理執筆）")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("context")
     purpose = sub.add_parser("purpose-start")
