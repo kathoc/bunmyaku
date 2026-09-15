@@ -20,7 +20,7 @@ jlangbase = "jlangbase.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-jlangbase = ["resources/*.json", "resources/*.md"]
+jlangbase = ["resources/*.json", "resources/*.md", "resources/natural-japanese/*.md", "resources/natural-japanese/*.json", "resources/natural-japanese/references/*.md", "resources/natural-japanese/references/doctypes/*.md", "resources/natural-japanese/assets/*.md", "resources/natural-japanese/scripts/*.py"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

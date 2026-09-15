@@ -84,6 +84,9 @@ def install(home, selected, update=False, dry_run=False):
               "`writing-submit DIR response.json --agent-id ID`で戻りを提出する。"
               "Ollamaでは`writing-run DIR --model MODEL`が役割別に呼び出す。"
               "完了時だけ`writing-handoff DIR --out manuscript.md`で書き出す。\n")
+    usage += ("\n日本語の執筆指針と検査は同梱済み。`context`のnatural_japaneseが資料の所在。"
+              "`lint manuscript.md --json`、`outline manuscript.md --json`、`terms manuscript.md --json`で検査する。"
+              "通常検査の初回は専用仮想環境に依存を自動取得するため通信が必要。uvや別スキルの導入は不要。\n")
     dispatch = {
         "codex": "--host codexを指定し、Codexのサブエージェント機能（spawn_agentとfollowup_task等、現在の環境で提供されるもの）で担当を起動・再開する。Claude CLIやOllamaへ依頼しない。",
         "claude": "--host claudeを指定し、Claude Codeのサブエージェント機能（Agent等、現在の環境で提供されるもの）で担当を起動・再開する。Codex CLIやOllamaへ依頼しない。",
@@ -140,6 +143,17 @@ def install(home, selected, update=False, dry_run=False):
                          "原稿と判定はsessions内の各セッションに保存し、completeだけを次工程へ渡す。"
                          "モデルの合格と実読者の評価を区別する。\n")
     index = memory / "INDEX.md"
+    japanese_memory = memory / "natural-japanese-memory.md"
+    if not japanese_memory.exists():
+        with japanese_memory.open("x", encoding="utf-8") as handle:
+            handle.write("# 同梱の日本語執筆と検査\n\n"
+                         "contextのresourcesにあるnatural-japanese-workflow.mdを読む。"
+                         "上流の資料はcontextのnatural_japaneseにある。"
+                         "通常検査はlint・outline・terms、点検要求には実検査結果が付く。"
+                         "警告を文脈で判断し、bunmyakuの発見駆動の生成、担当分担、記録を保持する。\n")
+    if "natural-japanese-memory.md" not in index.read_text(encoding="utf-8"):
+        with index.open("a", encoding="utf-8") as handle:
+            handle.write("\n- natural-japanese-memory.md: 同梱する執筆指針・検査と適用順。\n")
     if "agent-writing-memory.md" not in index.read_text(encoding="utf-8"):
         with index.open("a", encoding="utf-8") as handle:
             handle.write("\n- agent-writing-memory.md: ホストに合わせた執筆委譲と原稿の受理手順。\n")

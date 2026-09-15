@@ -1,5 +1,9 @@
 # 共通配布と中央改善の仕様
 
+## 2026-09-15の追加
+
+natural-japaneseの固定版をresources内に同梱し、contextと共通検査コマンドから参照する。初回検査で専用環境へ依存を準備し、writing-taskの点検要求には実検査結果を含める。個人メモリーには統合手順の入口を追加し、既存の追記を保持する。配布CIの各OSへ通常検査・統合・同期のテストを追加した。詳細と確認範囲は[natural-japanese統合仕様](natural-japanese-integration-spec.md)に記す。
+
 ## 2026-09-10の追加
 
 執筆代理の共通手順を`~/.agents/references/jlangbase-agent-writing.md`へ配置する。スキルの共通部分は維持し、CodexにはCodex、ClaudeにはClaudeの担当を呼ぶ指示とhost値を埋め込む。Ollamaは同梱writing-runから同じ共通状態管理を使う。`agent-writing-memory.md`と索引項目は初回だけ追加し、利用者の記憶本文を上書きしない。詳細と検証結果は[執筆代理仕様](agent-writing-spec.md)を参照。

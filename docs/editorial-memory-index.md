@@ -1,5 +1,9 @@
 # 編集判断の索引
 
+- natural-japaneseの単体同梱: natural-japanese-integration-spec.md、resources/natural-japanese-workflow.md、editorial-memory.md。外部スキル不要の資料・検査と、bunmyakuの生成・保存方針への統合。
+
+- 場面の共有と終わり方: resources/scene-sharing.md、scene-sharing-spec.md、editorial-memory.md。主体・動作・変化の提示順、期待、細部、長さ、結びを判断する。情景の創作やオチを義務にしない。
+
 - 文の働きを残す修正: reader-functions-spec.md、editorial-memory.md、resources/reader-functions.md。新規読解版2は修正前の声・想像・考える余地を記録し、損失も比較する。問いの増加や記憶向上の保証にはしない。
 
 - 読者の現在地と最小修正: reader-loop-spec.md、editorial-memory.md、resources/reader-loop.md。生成v2の原因別選択と版付きの読者反応。改善効果は未確認。

@@ -1,0 +1,40 @@
+{
+  "upstream": {
+    "url": "https://github.com/coji/natural-japanese.git",
+    "commit": "cecd53e98d58ab8ba7d9f97a9f4558362d643c5a"
+  },
+  "files": {
+    "LICENSE.md": "fb3dd814f7b2807de2a812446c61643cf235e731bbf8cf908c0a5962d8917121",
+    "SKILL.md": "0f662a6ab4955b9146a138a38b73a619b27fa1448ef71e27fcc57f67d3ad0267",
+    "assets/style-profile-template.md": "d43a199e1399c73a41f332c45c5cf2321457fd49391b0a5bec23e52ef6fb5541",
+    "references/diagnose.md": "e3c80cdeada823d34d003f83df1e9cbc0e07fbdf109b5c8f7a796a889a00d5a4",
+    "references/doctypes/guide.md": "4b9db16365ea305c71eb9a59faedfc73620fd93d09721dc29292951994ba239d",
+    "references/doctypes/memo.md": "d74be03c71e992f4c070fe42249e1cfc6faa87efc7438c6f5aa2659d831e17f5",
+    "references/doctypes/minutes.md": "de38887be3def7cd35e1b1ffbdf10c21a9c4601fb528f3022f14512df3bc8129",
+    "references/doctypes/report.md": "28f0cd6cef86fda5cb0bc236b9d1bb1d3d09892aacf5f813bec4f7c4cd84ea8f",
+    "references/doctypes/slide.md": "1ca8db97566ad053cdb0115a72e12099f94648c5ba3a3d0bd6d33bf91c7f59d8",
+    "references/eval-rubric.md": "77a49a4d0f70a51d4e595dec3ab236543b404edab5c6ccafb57c3f1f68d4ae65",
+    "references/examples.md": "bc37c36ebda975351e2949f05990b7202737a3f5b1f95f53584158e9a6d1e99d",
+    "references/forbidden-patterns.md": "0cce2ad7f053611a8c983ebf86f55631e019bbf752cc815c04077b229a557b1f",
+    "references/genre-notes.md": "d5b2f7ecda12649efc26ef4a716fe6b2d4c03568b674dc5a06842f90cf6e8a6f",
+    "references/manual-checklist.md": "19eda8c3098e941c593bb3d4018b9b1f284f3c184db140c799623a07e91c487c",
+    "references/readability-antipatterns.md": "10418600db75d12da4ba7ca6d76cc9d0bc60e305ae4e75fa90f28c2aa76317b0",
+    "references/readability-principles.md": "6a495446fe6828968371d24a1b628d28a37842ae0fd0e4f11162b57a7f9c4d70",
+    "references/revision-guide.md": "27641d1a2aa5b41821d3da186ddf4139dc091c5dd8fb20544d814675b863433a",
+    "references/translationese.md": "09b3da1ebf4c663be9cb0bf9ed5bade476ba10804509e6ca6dc22dc15129f827",
+    "references/writing-constitution.md": "457b83afa64fa0da95a9daa25a8140e203fc4a3e87b2ff2c2839e0c8aad7ffdb",
+    "scripts/lint.py": "576fb564126b6a81feadc88969a0ec8fb8fc7a755899e5b90fe91981e644881a",
+    "scripts/outline.py": "9b0478364f76c6aeed2befc8f4ee1aa4aa1ec6789eca45fb7b9958ccaed7ca80",
+    "scripts/semantic.py": "c14909618677ee66c6f67a0cc81bc9ced9951f2ffd9727182e5e0de6b2d1d667",
+    "scripts/terms.py": "304acb82d8d8cb8a2f45b5efc1110f407e2316d23c13bfc8734670fc1ac81e19",
+    "scripts/textcore.py": "ea363ed8611256afb07b0ce83b478c2d559a910d00bfa152d9244f60025da1f2"
+  },
+  "excluded": {
+    "calibrate.py": "corpus 校正用で通常検査に不要",
+    "scripts/fixtures/": "fixture は配布機能に不要",
+    "__pycache__/": "生成物",
+    "corpus/": "研究用コーパスと実験成果物"
+  },
+  "imported_at": "2026-09-15T04:11:39.053275+00:00",
+  "modified": false
+}

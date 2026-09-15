@@ -65,6 +65,24 @@ curl -fsSL https://raw.githubusercontent.com/kathoc/bunmyaku/main/install.sh | s
 
 ## Codex / Claude Code
 
+### 同梱の日本語執筆と検査
+
+natural-japaneseの執筆手順、文書型、読みやすさの参照資料、検査スクリプトをbunmyakuに同梱しています。別のnatural-japaneseスキルやuvを導入する必要はありません。通常の検査は次のコマンドで使えます。
+
+```bash
+natural-japanese lint manuscript.md --json
+natural-japanese outline manuscript.md --json
+natural-japanese terms manuscript.md --json
+```
+
+初回検査時には、bunmyaku専用のPython仮想環境へSudachiPyと日本語辞書を自動取得します。Pythonのvenv・pip機能とネットワーク接続が必要です。準備後の通常検査はローカルで動きます。`context`で同梱資料の場所を取得できます。PATHにコマンドがなければ、インストーラーが表示するinvocationに同じ引数を付けてください。
+
+初稿と編集稿の点検要求には、対象原稿のlint・outline・termsの実行結果が含まれます。担当が結果を文脈で判断し、警告の件数だけで合否を決めません。意味モデルを使うsemanticは任意の実験機能で、通常検査では依存やモデルを取得しません。
+
+同梱版はbunmyakuの明示的な更新で切り替わります。元スキルの版、ライセンス、同梱範囲はcontextのnatural_japaneseにあるprovenance.jsonとLICENSE.mdで確認できます。[統合手順](../src/jlangbase/resources/natural-japanese-workflow.md)に適用順をまとめています。
+
+### 環境別の入口
+
 Codexには`~/.agents/skills/japanese-discovery-writing`、Claudeには`~/.claude/skills/japanese-discovery-writing`を配置する。その後は普段どおり記事執筆や推敲を依頼する。認識されなければ新しいセッションまたは再起動を試す。自動選択はモデルの判断であり、100%の起動保証ではない。既存AGENTS.md/CLAUDE.mdや他のスキルを変更・無効化しない。
 
 新規執筆では、CodexからはCodexの、Claude CodeからはClaudeのサブエージェントへ依頼する。親AIがbunmyakuの共通コマンドで執筆指示、点検、差し戻し、全文編集を管理し、最終点検を通過した原稿を返す。別の生成APIは不要。サブエージェント機能が利用できない環境では理由を報告して停止する。別の校正スキルと同時選択される可能性は残る。

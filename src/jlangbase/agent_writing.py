@@ -112,7 +112,8 @@ def task(session):
         raise ValueError("停止済みセッションです")
     role = "reviewer" if state["phase"] == "review" else ("editor" if state["phase"] == "edit" else "writer")
     root = files("jlangbase").joinpath("resources")
-    names = ["project-purpose.md", "writing-workflow.md", "reader-loop.md", "reader-functions.md"]
+    names = ["project-purpose.md", "writing-workflow.md", "reader-loop.md", "reader-functions.md",
+             "natural-japanese-workflow.md"]
     if state["phase"] == "edit" or state.get("review_target") == "edit":
         names += ["editorial-workflow.md", "editorial-explanation.md"]
     request = {"request_id": state["request_id"], "phase": state["phase"], "role": role, "host": state["host"],
@@ -138,6 +139,9 @@ def task(session):
             for k in REVIEW_KEYS}})
     request["blocked_response_schema"] = {"request_id": request["request_id"], "status": "blocked", "reason": "作業を進められない具体的理由"}
     request["output_schema"] = _output_schema(role)
+    if role == "reviewer":
+        from .japanese_checks import analyze_text
+        request["natural_japanese_checks"] = analyze_text(state["manuscript"])
     if state.get("last_error"):
         request["previous_error"] = state["last_error"]["message"]
     return request

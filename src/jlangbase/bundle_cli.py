@@ -17,6 +17,13 @@ def memory_root():
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] in {"lint", "outline", "terms", "semantic"}:
+        from .japanese_checks import run_check
+        try:
+            return run_check(argv[0], argv[1:])
+        except (ValueError, OSError) as exc:
+            print(f"エラー: {exc}", file=sys.stderr)
+            return 2
     if argv and argv[0].startswith("writing-"):
         from . import agent_writing
         command = argv[0]
@@ -61,7 +68,8 @@ def main(argv=None):
     if argv and argv[0] == "engine":
         from .cli import main as engine_main
         return engine_main(argv[1:])
-    parser = argparse.ArgumentParser(description="共通日本語執筆・個人履歴（writing-start/task/submit/handoff/run で代理執筆）")
+    parser = argparse.ArgumentParser(description="共通日本語執筆・個人履歴（writing-start/task/submit/handoff/run で代理執筆）",
+                                     epilog="同梱検査: lint / outline / terms / semantic。各コマンドの--helpで引数を確認できます。")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("context")
     purpose = sub.add_parser("purpose-start")
@@ -88,6 +96,7 @@ def main(argv=None):
             print(json.dumps({"project_purpose": purpose_context(),
                               "rules": files("jlangbase").joinpath("resources/writing-workflow.md").read_text(encoding="utf-8"),
                               "resources": str(files("jlangbase").joinpath("resources")),
+                              "natural_japanese": str(files("jlangbase").joinpath("resources/natural-japanese")),
                               "memory_index": str(memory_root() / "INDEX.md"),
                               "corrections": str(memory_root() / "corrections"),
                               "sessions": str(memory_root() / "sessions")}, ensure_ascii=False, indent=2))

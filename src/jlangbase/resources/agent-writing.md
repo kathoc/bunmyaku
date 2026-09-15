@@ -48,6 +48,8 @@ writing-task DIR --out request-02.json
 
 ## 点検を通過してから編集へ進む
 
+natural-japanese-workflow.mdも使う。writing-taskは点検対象の本文に同梱のlint・outline・termsを実行し、natural_japanese_checksへ結果を含める。点検担当は警告の採否、意味の通り方、構造、必要な用語説明をreviewsで判断する。警告数を合否条件にしない。検査エラーは解消してから要求を再取得する。
+
 初稿の全項目がpassになるとeditへ進む。編集担当はeditorial-workflow.mdから必要な共通手順を読み、全文の構成、意味の保持、重複、題名への応答を整える。受理済み初稿と発見を渡し、問題のない部分は保つ。編集後も点検担当の全項目passを必要とする。
 
 不合格なら、該当箇所・理由・修正条件を次の要求に含めて同じ工程へ戻る。原因を示せない修正や、語尾・段落長を散らすだけの変更は行わない。既定では各工程3回まで修正し、その後も不合格ならbudget_exhaustedで止まる。blockedとbudget_exhaustedを完成扱いにしない。親は状態ファイルの理由を読み、解決に必要な情報を利用者へ伝える。
