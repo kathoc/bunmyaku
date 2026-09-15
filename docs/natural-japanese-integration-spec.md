@@ -69,3 +69,9 @@ context、共通CLI、配布スキル、writing-task、配布時の記憶と索�
 最初の隔離試行ではシステムのPythonが3.11未満で停止した。これは既存の必要条件による停止で、3.12のPythonに切り替えて上記を確認した。Windows向けのパスとUTF-8入出力を扱い、シンボリックリンクの作成権限がない環境では当該テストだけをスキップする。既存の三OS配布CIへ新規テストを追加した。
 
 仕様との未解消の差異はない。Linuxでの実行確認まで完了。Windows・macOSの実機実行、追加したGitHub CIの実行、semanticの大規模モデル推論、実モデルによる原稿品質は未検証。GitHubへのpushと利用中環境の更新は行っていない。詳細はdocs/reviews/natural-japanese-source-audit.md、natural-japanese-runtime.md、natural-japanese-vendor.md、natural-japanese-standalone-review.mdに記録した。
+
+## GitHubへの反映と三OSでの確認
+
+利用者の公開指示を受け、2026-09-15にコミットa842ffdをmainへpushした。公開前の全体テストは129件成功。同梱元の末尾空行は原文とハッシュの一致を優先して保持し、自作部分の空白を整えた。
+
+[配布CIの実行34929118858](https://github.com/kathoc/bunmyaku/actions/runs/34929118858)は、ubuntu-latest、macos-latest、windows-latestの全ジョブで成功した。これにより、前節で未検証としていたGitHub CI上の三OSの導入・検査を確認できた。利用者の実機環境、semanticのモデル推論、原稿品質への効果は引き続き未検証。利用中環境の更新は行っていない。
